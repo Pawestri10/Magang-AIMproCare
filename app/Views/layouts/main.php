@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/components/buttons.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/components/modal.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/components/forms.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/components/badges.css') ?>">
 
     <?= $this->renderSection('styles') ?>
 

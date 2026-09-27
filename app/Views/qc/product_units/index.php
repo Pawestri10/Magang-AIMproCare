@@ -1,64 +1,186 @@
-<!DOCTYPE html>
-<html lang="id">
+<?= $this->extend('layouts/main') ?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unit Produk - AIMpro Care</title>
-</head>
 
-<body>
-    <h1>Unit Produk & Nomor Serial</h1>
+<?= $this->section('content') ?>
 
-    <?php if (session()->getFlashdata('success')): ?>
-        <p><?= esc(session()->getFlashdata('success')) ?></p>
-    <?php endif; ?>
+<div class="page-header">
 
-    <?php if (session()->getFlashdata('error')): ?>
-        <p><?= esc(session()->getFlashdata('error')) ?></p>
-    <?php endif; ?>
+    <div>
 
-    <p>
-        <a href="<?= site_url('qc/product-units/create') ?>">
-            Tambah Unit
-        </a>
-    </p>
+        <h1>
+            Pemeriksaan QC
+        </h1>
+
+        <p>
+            Kelola unit produk dan nomor serial untuk proses pemeriksaan QC.
+        </p>
+
+    </div>
+
+</div>
+
+
+<?php if (session()->getFlashdata('success')): ?>
+
+    <div class="alert alert-success">
+
+        <?= esc(session()->getFlashdata('success')) ?>
+
+    </div>
+
+<?php endif; ?>
+
+
+<?php if (session()->getFlashdata('error')): ?>
+
+    <div class="alert alert-danger">
+
+        <?= esc(session()->getFlashdata('error')) ?>
+
+    </div>
+
+<?php endif; ?>
+
+
+<div class="card">
+
+    <div class="table-toolbar">
+
+        <button
+            type="button"
+            class="button button-primary"
+            data-modal-open="product-unit-create-modal">
+
+            + Tambah Unit
+
+        </button>
+
+    </div>
+
 
     <?php if (empty($units)): ?>
 
-        <p>Belum ada unit produk.</p>
+        <div class="empty-state">
+
+            <p>
+                Belum ada unit produk.
+            </p>
+
+        </div>
 
     <?php else: ?>
 
-        <table border="1" cellpadding="8" cellspacing="0">
-            <thead>
-                <tr>
-                    <th>No.</th>
-                    <th>Produk</th>
-                    <th>Brand</th>
-                    <th>Model</th>
-                    <th>Nomor Serial</th>
-                    <th>Status</th>
-                    <th>Dibuat</th>
-                </tr>
-            </thead>
+        <div class="table-wrapper">
 
-            <tbody>
-                <?php foreach ($units as $index => $unit): ?>
+            <table class="data-table">
+
+                <thead>
+
                     <tr>
-                        <td><?= $index + 1 ?></td>
-                        <td><?= esc($unit['product_name']) ?></td>
-                        <td><?= esc($unit['brand']) ?></td>
-                        <td><?= esc($unit['model']) ?></td>
-                        <td><?= esc($unit['serial_number']) ?></td>
-                        <td><?= esc($unit['status']) ?></td>
-                        <td><?= esc($unit['created_at']) ?></td>
+
+                        <th>
+                            No.
+                        </th>
+
+                        <th>
+                            Produk
+                        </th>
+
+                        <th>
+                            Brand
+                        </th>
+
+                        <th>
+                            Model
+                        </th>
+
+                        <th>
+                            Nomor Serial
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Dibuat
+                        </th>
+
                     </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+
+                </thead>
+
+
+                <tbody>
+
+                    <?php foreach ($units as $index => $unit): ?>
+
+                        <?php
+                        $statusClassMap = [
+                            'Draft'                   => 'badge-muted',
+                            'Menunggu QC'             => 'badge-info',
+                            'Perlu Pemeriksaan Ulang' => 'badge-warning',
+                            'Tidak Lolos QC'          => 'badge-danger',
+                            'Siap Dijual'             => 'badge-success',
+                            'Terjual'                 => 'badge-purple',
+                            'Dikembalikan'            => 'badge-orange',
+                        ];
+
+                        $statusClass = $statusClassMap[$unit['status']] ?? 'badge-muted';
+                        ?>
+
+                        <tr>
+
+                            <td>
+                                <?= $index + 1 ?>
+                            </td>
+
+                            <td>
+                                <?= esc($unit['product_name']) ?>
+                            </td>
+
+                            <td>
+                                <?= esc($unit['brand']) ?>
+                            </td>
+
+                            <td>
+                                <?= esc($unit['model']) ?>
+                            </td>
+
+                            <td>
+                                <?= esc($unit['serial_number']) ?>
+                            </td>
+
+                            <td>
+
+                                <span class="badge <?= esc($statusClass) ?>">
+
+                                    <?= esc($unit['status']) ?>
+
+                                </span>
+
+                            </td>
+
+                            <td>
+                                <?= esc($unit['created_at']) ?>
+                            </td>
+
+                        </tr>
+
+                    <?php endforeach; ?>
+
+                </tbody>
+
+            </table>
+
+        </div>
 
     <?php endif; ?>
-</body>
 
-</html>
+</div>
+
+<?= view('qc/product_units/create', [
+    'products' => $products,
+]) ?>
+
+<?= $this->endSection() ?>

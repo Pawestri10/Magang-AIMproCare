@@ -25,6 +25,10 @@ class ProductUnitController extends BaseController
                 ->join('products', 'products.id = product_units.product_id')
                 ->orderBy('product_units.id', 'DESC')
                 ->findAll(),
+
+            'products' => $this->productModel
+                ->orderBy('name', 'ASC')
+                ->findAll(),
         ];
 
         return view('qc/product_units/index', $data);
