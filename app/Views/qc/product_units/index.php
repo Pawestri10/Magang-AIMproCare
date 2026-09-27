@@ -106,6 +106,10 @@
                             Dibuat
                         </th>
 
+                        <th>
+                            Aksi
+                        </th>
+
                     </tr>
 
                 </thead>
@@ -165,6 +169,51 @@
                                 <?= esc($unit['created_at']) ?>
                             </td>
 
+                            <td>
+
+                                <?php if ($unit['status'] === 'Menunggu QC'): ?>
+
+                                    <div class="table-actions">
+
+                                        <button
+                                            type="button"
+                                            class="button button-icon button-icon-edit"
+                                            data-modal-open="product-unit-inspect-modal-<?= esc($unit['id']) ?>"
+                                            data-tooltip="Mulai Pemeriksaan"
+                                            aria-label="Mulai Pemeriksaan">
+
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.8"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                aria-hidden="true">
+
+                                                <path d="M9 5h6"></path>
+
+                                                <path d="M9 3h6a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1z"></path>
+
+                                                <rect
+                                                    x="5"
+                                                    y="5"
+                                                    width="14"
+                                                    height="16"
+                                                    rx="2">
+                                                </rect>
+
+                                                <path d="m9 13 2 2 4-4"></path>
+
+                                            </svg>
+
+                                        </button>
+                                    </div>
+
+                                <?php endif; ?>
+
+                            </td>
+
                         </tr>
 
                     <?php endforeach; ?>
@@ -178,6 +227,18 @@
     <?php endif; ?>
 
 </div>
+
+<?php foreach ($units as $unit): ?>
+
+    <?php if ($unit['status'] === 'Menunggu QC'): ?>
+
+        <?= view('qc/product_units/inspect', [
+            'unit' => $unit,
+        ]) ?>
+
+    <?php endif; ?>
+
+<?php endforeach; ?>
 
 <?= view('qc/product_units/create', [
     'products' => $products,

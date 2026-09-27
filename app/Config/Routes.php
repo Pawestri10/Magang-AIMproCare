@@ -25,3 +25,5 @@ $routes->post('admin/products/(:num)/delete', 'ProductController::delete/$1', ['
 $routes->get('qc/product-units', 'ProductUnitController::index', ['filter' => 'auth:Petugas QC']);
 $routes->get('qc/product-units/create', 'ProductUnitController::create', ['filter' => 'auth:Petugas QC']);
 $routes->post('qc/product-units', 'ProductUnitController::store', ['filter' => 'auth:Petugas QC']);
+$routes->get('qc/product-units/(:num)/inspect', 'ProductUnitController::inspect/$1', ['filter' => 'auth:Petugas QC']);
+$routes->post('qc/product-units/(:num)/inspect', 'ProductUnitController::saveInspection/$1', ['filter' => 'auth:Petugas QC']);

@@ -27,6 +27,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/components/modal.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/components/forms.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/components/badges.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/pages/product-units.css') ?>">
 
     <?= $this->renderSection('styles') ?>
 
@@ -55,6 +56,7 @@
     <?= $this->include('components/mobile-nav') ?>
 
     <script src="<?= base_url('assets/js/components/modal.js') ?>"></script>
+    <script src="<?= base_url('assets/js/pages/product-units.js') ?>"></script>
 
     <?= $this->renderSection('scripts') ?>
 
