@@ -1,0 +1,148 @@
+/* MOBILE NAVIGATION */
+
+/* Navigation Container */
+
+.mobile-nav {
+    position: fixed;
+
+    left: var(--space-4);
+    right: var(--space-4);
+    bottom: var(--space-4);
+
+    min-height: 64px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    padding: var(--space-2);
+
+    background:
+        radial-gradient(
+            circle at 18% 10%,
+            rgba(229, 231, 235, 0.12),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 82% 90%,
+            rgba(199, 203, 209, 0.07),
+            transparent 32%
+        ),
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.10) 0%,
+            rgba(255, 255, 255, 0.035) 48%,
+            rgba(255, 255, 255, 0.075) 100%
+        );
+
+    border: 1px solid var(--glass-border);
+
+    border-radius: var(--radius-2xl);
+
+    box-shadow:
+        0 12px 40px rgba(0, 0, 0, 0.32),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+
+    backdrop-filter: blur(var(--blur-glass));
+    -webkit-backdrop-filter: blur(var(--blur-glass));
+
+    z-index: 200;
+}
+
+
+/* Navigation Item */
+
+.mobile-nav-item {
+    min-width: var(--touch-target-min);
+    min-height: var(--touch-target-min);
+
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: var(--space-2) var(--space-3);
+
+    color: var(--text-secondary);
+
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+
+    transition:
+        background var(--transition-base),
+        border-color var(--transition-base),
+        color var(--transition-base);
+}
+
+
+.mobile-nav-item:hover {
+    color: var(--text-primary);
+
+    background: var(--glass-bg);
+
+    border-color: var(--glass-border-subtle);
+}
+
+
+.mobile-nav-item:active {
+    color: var(--text-primary);
+
+    background: var(--glass-bg-strong);
+
+    border-color: var(--glass-border);
+}
+
+
+/* Navigation Label */
+
+.mobile-nav-label {
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+
+    text-align: center;
+}
+
+
+/* Desktop */
+
+@media (min-width: 1025px) {
+
+    .mobile-nav {
+        display: none;
+    }
+
+}
+
+
+/* Mobile */
+
+@media (max-width: 768px) {
+
+    .mobile-nav {
+        left: var(--space-3);
+        right: var(--space-3);
+        bottom: var(--space-3);
+
+        min-height: 64px;
+    }
+
+}
+
+
+/* Small Mobile */
+
+@media (max-width: 480px) {
+
+    .mobile-nav {
+        left: var(--space-2);
+        right: var(--space-2);
+        bottom: var(--space-2);
+    }
+
+
+    .mobile-nav-item {
+        padding: var(--space-2);
+    }
+
+}

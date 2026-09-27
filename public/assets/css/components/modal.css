@@ -1,0 +1,310 @@
+/* MODALS */
+
+/* Modal Container */
+
+.modal {
+    position: fixed;
+    inset: 0;
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: var(--space-6);
+
+    z-index: 1000;
+}
+
+
+/* Modal Backdrop */
+
+.modal-backdrop {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(0, 0, 0, 0.58);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+
+/* Modal Dialog */
+
+.modal-dialog {
+    position: relative;
+
+    width: 100%;
+    max-width: 560px;
+    max-height: calc(100vh - 48px);
+
+    overflow-y: auto;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255, 255, 255, 0.105) 0%,
+            rgba(255, 255, 255, 0.045) 48%,
+            rgba(255, 255, 255, 0.075) 100%
+        );
+
+    border: 1px solid var(--glass-border);
+
+    border-radius: var(--radius-2xl);
+
+    box-shadow:
+        0 24px 70px rgba(0, 0, 0, 0.42),
+        inset 0 1px 0 rgba(255, 255, 255, 0.10);
+
+    backdrop-filter: blur(var(--blur-glass));
+    -webkit-backdrop-filter: blur(var(--blur-glass));
+
+    isolation: isolate;
+}
+
+
+/* Modal Header */
+
+.modal-header {
+    display: flex;
+
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: var(--space-6);
+
+    padding: var(--space-6);
+
+    border-bottom: 1px solid var(--glass-border-subtle);
+}
+
+
+.modal-header h2 {
+    margin-bottom: var(--space-2);
+
+    font-size: var(--font-size-xl);
+}
+
+
+.modal-header p {
+    margin-bottom: 0;
+
+    color: var(--text-muted);
+
+    font-size: var(--font-size-sm);
+}
+
+
+/* Modal Close */
+
+.modal-close {
+    width: var(--touch-target-min);
+    min-width: var(--touch-target-min);
+
+    height: var(--touch-target-min);
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    color: var(--text-secondary);
+
+    background: rgba(255, 255, 255, 0.045);
+
+    border: 1px solid var(--glass-border-subtle);
+
+    border-radius: var(--radius-md);
+
+    transition:
+        background var(--transition-base),
+        border-color var(--transition-base),
+        color var(--transition-base),
+        transform var(--transition-fast);
+}
+
+
+.modal-close svg {
+    width: 18px;
+    height: 18px;
+}
+
+
+.modal-close:hover {
+    color: var(--color-white);
+
+    background: rgba(255, 255, 255, 0.10);
+
+    border-color: var(--glass-border);
+
+    transform: translateY(-1px);
+}
+
+
+/* Modal Body */
+
+.modal-body {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: var(--space-5);
+
+    padding: var(--space-6);
+}
+
+
+/* Modal Footer */
+
+.modal-footer {
+    display: flex;
+
+    align-items: center;
+    justify-content: flex-end;
+
+    gap: var(--space-3);
+
+    padding: var(--space-5) var(--space-6);
+
+    border-top: 1px solid var(--glass-border-subtle);
+}
+
+
+/* Modal Open State */
+
+.modal.is-open {
+    display: flex;
+}
+
+
+/* Modal Scrollbar */
+
+.modal-dialog::-webkit-scrollbar {
+    width: 6px;
+}
+
+
+.modal-dialog::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+
+.modal-dialog::-webkit-scrollbar-thumb {
+    background: var(--color-silver-muted);
+
+    border-radius: var(--radius-pill);
+}
+
+
+/* Responsive */
+
+@media (max-width: 768px) {
+
+    .modal {
+        padding: var(--space-4);
+    }
+
+
+    .modal-dialog {
+        max-height: calc(100vh - 32px);
+
+        border-radius: var(--radius-xl);
+    }
+
+
+    .modal-header,
+    .modal-body {
+        padding: var(--space-5);
+    }
+
+
+    .modal-footer {
+        padding: var(--space-4) var(--space-5);
+    }
+
+}
+
+/* Modal Body State */
+
+body.modal-open {
+    overflow: hidden;
+}
+
+/* Small Modal */
+
+.modal-dialog-small {
+    max-width: 420px;
+}
+
+/* Delete Confirmation */
+
+.delete-confirmation {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    text-align: center;
+}
+
+.delete-confirmation-icon {
+    width: 56px;
+    height: 56px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-danger);
+    background: rgba(239, 68, 68, 0.10);
+    border: 1px solid rgba(239, 68, 68, 0.22);
+    border-radius: var(--radius-lg);
+}
+
+.delete-confirmation-icon svg {
+    width: 24px;
+    height: 24px;
+}
+
+.delete-confirmation p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+}
+
+.delete-confirmation-text {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: var(--font-size-sm);
+    line-height: 1.6;
+}
+
+.button-danger svg {
+    width: 17px;
+    height: 17px;
+    flex-shrink: 0;
+}
+
+/* Modal Footer Actions */
+
+.modal-footer-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--space-3);
+}
+
+/* Small Modal Spacing */
+
+.modal-dialog-small .modal-header {
+    padding: var(--space-5) var(--space-6);
+}
+
+.modal-dialog-small .modal-body {
+    padding: var(--space-5) var(--space-6);
+}
+
+.modal-dialog-small .modal-footer {
+    padding: var(--space-4) var(--space-6);
+}
