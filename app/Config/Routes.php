@@ -27,3 +27,4 @@ $routes->get('qc/product-units/create', 'ProductUnitController::create', ['filte
 $routes->post('qc/product-units', 'ProductUnitController::store', ['filter' => 'auth:Petugas QC']);
 $routes->get('qc/product-units/(:num)/inspect', 'ProductUnitController::inspect/$1', ['filter' => 'auth:Petugas QC']);
 $routes->post('qc/product-units/(:num)/inspect', 'ProductUnitController::saveInspection/$1', ['filter' => 'auth:Petugas QC']);
+$routes->get('qc/product-units/(:num)/detail', 'ProductUnitController::detail/$1', ['filter' => 'auth:Petugas QC']);

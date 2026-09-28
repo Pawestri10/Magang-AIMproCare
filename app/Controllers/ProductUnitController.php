@@ -15,6 +15,7 @@ class ProductUnitController extends BaseController
     protected ProductModel $productModel;
     protected QcInspectionModel $qcInspectionModel;
     protected QcChecklistItemModel $qcChecklistItemModel;
+    protected QcDocumentationModel $qcDocumentationModel;
 
     public function __construct()
     {
@@ -22,23 +23,86 @@ class ProductUnitController extends BaseController
         $this->productModel = new ProductModel();
         $this->qcInspectionModel = new QcInspectionModel();
         $this->qcChecklistItemModel = new QcChecklistItemModel();
+        $this->qcDocumentationModel = new QcDocumentationModel();
     }
 
     public function index()
     {
-        $data = [
-            'units' => $this->productUnitModel
-                ->select('product_units.*, products.name AS product_name, products.brand, products.model')
-                ->join('products', 'products.id = product_units.product_id')
-                ->orderBy('product_units.id', 'DESC')
-                ->findAll(),
+        $units = $this->productUnitModel
+            ->select('product_units.*, products.name AS product_name, products.brand, products.model,
+            EXISTS (
+                SELECT 1
+                FROM qc_inspections
+                WHERE qc_inspections.product_unit_id = product_units.id
+            ) AS has_inspection')
 
-            'products' => $this->productModel
+            ->join('products', 'products.id = product_units.product_id')
+            ->orderBy('product_units.id', 'DESC')
+            ->findAll();
+
+        $inspections = $this->qcInspectionModel
+            ->select('
+                qc_inspections.*,
+                users.name AS officer_name
+            ')
+            ->join('users', 'users.id = qc_inspections.user_id')
+            ->orderBy('qc_inspections.inspection_date', 'DESC')
+            ->orderBy('qc_inspections.id', 'DESC')
+            ->findAll();
+
+        $checklists = $this->qcChecklistItemModel
+            ->orderBy('id', 'ASC')
+            ->findAll();
+
+        $documentations = $this->qcDocumentationModel
+            ->orderBy('id', 'ASC')
+            ->findAll();
+
+        // Kelompokkan checklist berdasarkan pemeriksaan.
+
+        $checklistByInspection = [];
+
+        foreach ($checklists as $checklist) {
+            $checklistByInspection[$checklist['qc_inspection_id']][] = $checklist;
+        }
+
+
+        // Kelompokkan dokumentasi berdasarkan pemeriksaan.
+
+        $documentationByInspection = [];
+
+        foreach ($documentations as $documentation) {
+            $documentationByInspection[$documentation['qc_inspection_id']][] = $documentation;
+        }
+
+        // Gabungkan checklist dan dokumentasi ke masing-masing data pemeriksaan.
+
+        foreach ($inspections as &$inspection) {
+
+            $inspection['checklist'] =
+                $checklistByInspection[$inspection['id']] ?? [];
+
+            $inspection['documentations'] =
+                $documentationByInspection[$inspection['id']] ?? [];
+        }
+
+        unset($inspection);
+
+        // Kelompokkan pemeriksaan berdasarkan unit produk.
+
+        $inspectionHistory = [];
+
+        foreach ($inspections as $inspection) {
+            $inspectionHistory[$inspection['product_unit_id']][] = $inspection;
+        }
+
+        return view('qc/product_units/index', [
+            'units'            => $units,
+            'products'         => $this->productModel
                 ->orderBy('name', 'ASC')
                 ->findAll(),
-        ];
-
-        return view('qc/product_units/index', $data);
+            'inspectionHistory' => $inspectionHistory,
+        ]);
     }
 
     public function create()
@@ -102,6 +166,52 @@ class ProductUnitController extends BaseController
         ]);
     }
 
+    public function detail($id)
+    {
+        $unit = $this->productUnitModel
+            ->select('product_units.*, products.name AS product_name, products.brand, products.model')
+            ->join('products', 'products.id = product_units.product_id')
+            ->where('product_units.id', $id)
+            ->first();
+
+        if (!$unit) {
+            return redirect()
+                ->to(base_url('qc/product-units'))
+                ->with('error', 'Unit produk tidak ditemukan.');
+        }
+
+        $inspections = $this->qcInspectionModel
+            ->select('
+            qc_inspections.*,
+            users.name AS officer_name
+        ')
+            ->join('users', 'users.id = qc_inspections.user_id')
+            ->where('qc_inspections.product_unit_id', $id)
+            ->orderBy('qc_inspections.inspection_date', 'DESC')
+            ->orderBy('qc_inspections.id', 'DESC')
+            ->findAll();
+
+        foreach ($inspections as &$inspection) {
+
+            $inspection['checklist'] = $this->qcChecklistItemModel
+                ->where('qc_inspection_id', $inspection['id'])
+                ->orderBy('id', 'ASC')
+                ->findAll();
+
+            $inspection['documentations'] = $this->qcDocumentationModel
+                ->where('qc_inspection_id', $inspection['id'])
+                ->orderBy('id', 'ASC')
+                ->findAll();
+        }
+
+        unset($inspection);
+
+        return view('qc/product_units/detail', [
+            'unit'        => $unit,
+            'inspections' => $inspections,
+        ]);
+    }
+
     public function saveInspection($id)
     {
         $unitModel          = new ProductUnitModel();
@@ -121,10 +231,9 @@ class ProductUnitController extends BaseController
                 ->with('error', 'Unit produk tidak ditemukan.');
         }
 
-        /*
-     * Unit hanya boleh diperiksa ketika masih menunggu QC.
-     */
-        if ($unit['status'] !== 'Menunggu QC') {
+        // Unit hanya boleh diperiksa ketika masih menunggu QC.
+
+        if (!in_array($unit['status'], ['Menunggu QC', 'Perlu Pemeriksaan Ulang'], true)) {
             return redirect()
                 ->to(base_url('qc/product-units'))
                 ->with('error', 'Unit tersebut tidak dapat diperiksa kembali.');
@@ -133,9 +242,8 @@ class ProductUnitController extends BaseController
         $checklist = $this->request->getPost('checklist');
         $result    = $this->request->getPost('result');
 
-        /*
-     * Validasi server-side.
-     */
+        // Validasi server-side
+
         $validation = service('validation');
 
         $validation->setRules([
@@ -169,9 +277,8 @@ class ProductUnitController extends BaseController
                 ->with('errors', $validation->getErrors());
         }
 
-        /*
-     * Checklist wajib berjumlah 7 item.
-     */
+        // Checklist wajib berjumlah 7 item.
+
         if (!is_array($checklist) || count($checklist) !== 7) {
             return redirect()
                 ->back()
@@ -202,9 +309,8 @@ class ProductUnitController extends BaseController
             }
         }
 
-        /*
-     * File wajib.
-     */
+        //    File wajib
+
         $unboxingVideo = $this->request->getFile('unboxing_video');
         $serialPhoto   = $this->request->getFile('serial_photo');
         $productPhoto  = $this->request->getFile('product_photo');
@@ -225,9 +331,8 @@ class ProductUnitController extends BaseController
             }
         }
 
-        /*
-     * Validasi tipe file di server.
-     */
+        //    Validasi tipe file di server.
+
         if (
             !in_array($unboxingVideo->getMimeType(), [
                 'video/mp4',
@@ -251,9 +356,8 @@ class ProductUnitController extends BaseController
             }
         }
 
-        /*
-     * Direktori penyimpanan.
-     */
+        //    Direktori Penyimpanan
+
         $uploadPath = FCPATH . 'uploads/qc/' . $unit['id'];
 
         if (!is_dir($uploadPath)) {
@@ -268,9 +372,8 @@ class ProductUnitController extends BaseController
 
         try {
 
-            /*
-         * Simpan pemeriksaan QC.
-         */
+            // Simpan Pemeriksaan QC
+
             $inspectionId = $inspectionModel->insert([
                 'product_unit_id'   => $unit['id'],
                 'user_id'           => session()->get('user_id'),
@@ -285,9 +388,8 @@ class ProductUnitController extends BaseController
                 throw new \RuntimeException('Gagal menyimpan pemeriksaan QC.');
             }
 
-            /*
-         * Simpan 7 checklist.
-         */
+            // Simpan 7 Checklist
+
             foreach ($checklistItems as $index => $itemName) {
 
                 $checklistModel->insert([
@@ -298,9 +400,8 @@ class ProductUnitController extends BaseController
                 ]);
             }
 
-            /*
-         * Simpan dokumentasi file.
-         */
+            // Simpan Dokumentasi file
+
             $documentationFiles = [
                 [
                     'file' => $unboxingVideo,
@@ -337,9 +438,8 @@ class ProductUnitController extends BaseController
                 ]);
             }
 
-            /*
-         * Hasil QC menentukan status unit.
-         */
+            // Hasil QC menentukan status unit
+
             $statusMap = [
                 'Lolos QC'                => 'Siap Dijual',
                 'Tidak Lolos QC'          => 'Tidak Lolos QC',

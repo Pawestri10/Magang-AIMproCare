@@ -187,6 +187,118 @@
     outline-offset: 3px;
 }
 
+/* QC HISTORY */
+
+.qc-history {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+}
+
+.qc-history-item {
+    padding: var(--space-5);
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-lg);
+    backdrop-filter: blur(var(--blur-glass));
+    -webkit-backdrop-filter: blur(var(--blur-glass));
+}
+
+.qc-history-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-5);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--glass-border-subtle);
+}
+
+.qc-history-header h4 {
+    margin: var(--space-1) 0 0;
+    color: var(--text-primary);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-semibold);
+}
+
+.qc-history-section {
+    margin-top: var(--space-6);
+}
+
+.qc-history-section .section-heading {
+    margin-bottom: var(--space-3);
+}
+
+.qc-documentation-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+}
+
+.qc-documentation-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    min-width: 0;
+}
+
+.qc-documentation-image,
+.qc-documentation-video {
+    width: 100%;
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    background: var(--color-deep-black);
+}
+
+.qc-documentation-image {
+    display: block;
+    aspect-ratio: 4 / 3;
+    object-fit: contain;
+}
+
+.qc-documentation-video {
+    display: block;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+}
+
+@media (max-width: 768px) {
+
+    .qc-history-item {
+        padding: var(--space-4);
+    }
+
+    .qc-history-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .qc-documentation-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+/* QC DETAIL */
+
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+}
+
+.detail-value {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: var(--space-3) var(--space-4);
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid var(--glass-border-subtle);
+    border-radius: var(--radius-sm);
+    line-height: 1.5;
+}
+
 @media (max-width: 768px) {
 
     .qc-checklist-item {

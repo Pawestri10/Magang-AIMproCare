@@ -171,16 +171,23 @@
 
                             <td>
 
-                                <?php if ($unit['status'] === 'Menunggu QC'): ?>
+                                <div class="table-actions">
 
-                                    <div class="table-actions">
+                                    <?php if (
+                                        $unit['status'] === 'Menunggu QC' ||
+                                        $unit['status'] === 'Perlu Pemeriksaan Ulang'
+                                    ): ?>
 
                                         <button
                                             type="button"
                                             class="button button-icon button-icon-edit"
                                             data-modal-open="product-unit-inspect-modal-<?= esc($unit['id']) ?>"
-                                            data-tooltip="Mulai Pemeriksaan"
-                                            aria-label="Mulai Pemeriksaan">
+                                            data-tooltip="<?= $unit['status'] === 'Perlu Pemeriksaan Ulang'
+                                                                ? 'Mulai Pemeriksaan Ulang'
+                                                                : 'Mulai Pemeriksaan' ?>"
+                                            aria-label="<?= $unit['status'] === 'Perlu Pemeriksaan Ulang'
+                                                            ? 'Mulai Pemeriksaan Ulang'
+                                                            : 'Mulai Pemeriksaan' ?>">
 
                                             <svg
                                                 viewBox="0 0 24 24"
@@ -193,7 +200,7 @@
 
                                                 <path d="M9 5h6"></path>
 
-                                                <path d="M9 3h6a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1z"></path>
+                                                <path d="M9 3h6a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1 1z"></path>
 
                                                 <rect
                                                     x="5"
@@ -208,12 +215,45 @@
                                             </svg>
 
                                         </button>
-                                    </div>
 
-                                <?php endif; ?>
+                                    <?php endif; ?>
+
+
+                                    <?php if ((int) $unit['has_inspection'] === 1): ?>
+
+                                        <button
+                                            type="button"
+                                            class="button button-icon button-icon-view"
+                                            data-modal-open="product-unit-detail-modal-<?= esc($unit['id']) ?>"
+                                            data-tooltip="Detail Pemeriksaan"
+                                            aria-label="Detail Pemeriksaan">
+
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.8"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                aria-hidden="true">
+
+                                                <path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"></path>
+
+                                                <circle
+                                                    cx="12"
+                                                    cy="12"
+                                                    r="2.5">
+                                                </circle>
+
+                                            </svg>
+
+                                        </button>
+
+                                    <?php endif; ?>
+
+                                </div>
 
                             </td>
-
                         </tr>
 
                     <?php endforeach; ?>
@@ -230,7 +270,10 @@
 
 <?php foreach ($units as $unit): ?>
 
-    <?php if ($unit['status'] === 'Menunggu QC'): ?>
+    <?php if (
+        $unit['status'] === 'Menunggu QC' ||
+        $unit['status'] === 'Perlu Pemeriksaan Ulang'
+    ): ?>
 
         <?= view('qc/product_units/inspect', [
             'unit' => $unit,
@@ -243,5 +286,18 @@
 <?= view('qc/product_units/create', [
     'products' => $products,
 ]) ?>
+
+<?php foreach ($units as $unit): ?>
+
+    <?php if ((int) $unit['has_inspection'] === 1): ?>
+
+        <?= view('qc/product_units/detail', [
+            'unit' => $unit,
+            'inspections' => $inspectionHistory[$unit['id']] ?? [],
+        ]) ?>
+
+    <?php endif; ?>
+
+<?php endforeach; ?>
 
 <?= $this->endSection() ?>
