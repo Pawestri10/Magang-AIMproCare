@@ -93,7 +93,7 @@
 
                     <li class="sidebar-menu-item">
                         <a
-                            href="#"
+                            href="<?= site_url('admin/sales') ?>"
                             class="sidebar-menu-link">
 
                             <span class="sidebar-menu-label">
@@ -129,7 +129,7 @@
 
                     <li class="sidebar-menu-item">
                         <a
-                            href="#"
+                            href="<?= site_url('admin/activity-log') ?>"
                             class="sidebar-menu-link">
 
                             <span class="sidebar-menu-label">
@@ -184,18 +184,6 @@
 
                             <span class="sidebar-menu-label">
                                 Pemeriksaan QC
-                            </span>
-
-                        </a>
-                    </li>
-
-                    <li class="sidebar-menu-item">
-                        <a
-                            href="#"
-                            class="sidebar-menu-link">
-
-                            <span class="sidebar-menu-label">
-                                Riwayat Pemeriksaan
                             </span>
 
                         </a>

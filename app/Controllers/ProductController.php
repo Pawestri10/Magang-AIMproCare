@@ -4,14 +4,17 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\ProductModel;
+use App\Services\ActivityLogService;
 
 class ProductController extends BaseController
 {
     protected ProductModel $productModel;
+    protected ActivityLogService $activityLogService;
 
     public function __construct()
     {
         $this->productModel = new ProductModel();
+        $this->activityLogService = new ActivityLogService();
     }
 
     public function index()
@@ -68,6 +71,11 @@ class ProductController extends BaseController
                 ->with('errors', $this->productModel->errors());
         }
 
+        $this->activityLogService->log(
+            'UPDATE',
+            'Administrator memperbarui produk ' . $data['name'] . '.'
+        );
+
         return redirect()
             ->to('/admin/products')
             ->with('success', 'Produk berhasil diperbarui.');
@@ -83,7 +91,16 @@ class ProductController extends BaseController
             );
         }
 
-        $this->productModel->delete($id);
+        if (! $this->productModel->delete($id)) {
+            return redirect()
+                ->back()
+                ->with('error', 'Produk gagal dihapus.');
+        }
+
+        $this->activityLogService->log(
+            'DELETE',
+            'Administrator menghapus produk ' . $product['name'] . '.'
+        );
 
         return redirect()
             ->to('/admin/products')
@@ -101,6 +118,8 @@ class ProductController extends BaseController
         if (!$this->productModel->insert($data)) {
             return redirect()->back()->withInput()->with('errors', $this->productModel->errors());
         }
+
+        $this->activityLogService->log('CREATE', 'Administrator menambahkan produk ' . $data['name'] . '.');
 
         return redirect()->to('admin/products')->with('success', 'Produk berhasil ditambahkan.');
     }

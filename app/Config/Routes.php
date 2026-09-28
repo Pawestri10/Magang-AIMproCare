@@ -28,3 +28,6 @@ $routes->post('qc/product-units', 'ProductUnitController::store', ['filter' => '
 $routes->get('qc/product-units/(:num)/inspect', 'ProductUnitController::inspect/$1', ['filter' => 'auth:Petugas QC']);
 $routes->post('qc/product-units/(:num)/inspect', 'ProductUnitController::saveInspection/$1', ['filter' => 'auth:Petugas QC']);
 $routes->get('qc/product-units/(:num)/detail', 'ProductUnitController::detail/$1', ['filter' => 'auth:Petugas QC']);
+
+$routes->get('admin/sales', 'Admin\SalesController::index', ['filter' => 'auth:Administrator']);
+$routes->get('admin/activity-log', 'Admin\ActivityLogController::index', ['filter' => 'auth:Administrator']);

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\UserModel;
+use App\Services\ActivityLogService;
 
 class LoginController extends BaseController
 {
@@ -34,6 +35,13 @@ class LoginController extends BaseController
                 'role'       => $user['role'],
                 'isLoggedIn' => true,
             ]);
+
+            $activityLogService = new ActivityLogService();
+
+            $activityLogService->log(
+                'LOGIN',
+                'Administrator berhasil login ke dalam sistem.'
+            );
 
             return redirect()->to('/admin/dashboard');
         }
@@ -70,6 +78,13 @@ class LoginController extends BaseController
                 'isLoggedIn' => true,
             ]);
 
+            $activityLogService = new ActivityLogService();
+
+            $activityLogService->log(
+                'LOGIN',
+                'Petugas QC berhasil login ke dalam sistem.'
+            );
+
             return redirect()->to('/qc/dashboard');
         }
 
@@ -80,6 +95,13 @@ class LoginController extends BaseController
 
     public function logout()
     {
+        $activityLogService = new ActivityLogService();
+
+        $activityLogService->log(
+            'LOGOUT',
+            'Pengguna berhasil logout dari sistem.'
+        );
+
         session()->destroy();
 
         return redirect()->to('/');

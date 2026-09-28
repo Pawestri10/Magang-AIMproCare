@@ -28,6 +28,8 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/components/forms.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/components/badges.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/pages/product-units.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/pages/sales.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/pages/activity-logs.css') ?>">
 
     <?= $this->renderSection('styles') ?>
 
