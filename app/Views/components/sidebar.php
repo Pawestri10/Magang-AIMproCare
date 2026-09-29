@@ -77,7 +77,7 @@
 
                             <li class="sidebar-submenu-item">
                                 <a
-                                    href="#"
+                                    href="<?= site_url('admin/customers') ?>"
                                     class="sidebar-menu-link">
 
                                     <span class="sidebar-menu-label">

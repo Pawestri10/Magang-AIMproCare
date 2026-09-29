@@ -30,5 +30,12 @@ $routes->post('qc/product-units/(:num)/inspect', 'ProductUnitController::saveIns
 $routes->get('qc/product-units/(:num)/detail', 'ProductUnitController::detail/$1', ['filter' => 'auth:Petugas QC']);
 $routes->get('qc/documentations/(:num)', 'QcDocumentationController::show/$1', ['filter' => 'auth:Petugas QC']);
 
+$routes->get('admin/customers', 'CustomerController::index', ['filter' => 'auth:Administrator']);
+$routes->get('admin/customers/create', 'CustomerController::create', ['filter' => 'auth:Administrator']);
+$routes->post('admin/customers', 'CustomerController::store', ['filter' => 'auth:Administrator']);
+$routes->get('admin/customers/(:num)/edit', 'CustomerController::edit/$1', ['filter' => 'auth:Administrator']);
+$routes->post('admin/customers/(:num)', 'CustomerController::update/$1', ['filter' => 'auth:Administrator']);
+$routes->post('admin/customers/(:num)/delete', 'CustomerController::delete/$1', ['filter' => 'auth:Administrator']);
+
 $routes->get('admin/sales', 'Admin\SalesController::index', ['filter' => 'auth:Administrator']);
 $routes->get('admin/activity-log', 'Admin\ActivityLogController::index', ['filter' => 'auth:Administrator']);
