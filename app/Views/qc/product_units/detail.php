@@ -361,7 +361,7 @@
                                         <?php foreach ($inspection['documentations'] as $documentation): ?>
 
                                             <?php
-                                            $fileUrl = base_url($documentation['file_path']);
+                                            $fileUrl = base_url('qc/documentations/' . $documentation['id']);
                                             ?>
 
                                             <?php if ($documentation['type'] === 'unboxing_video'): ?>

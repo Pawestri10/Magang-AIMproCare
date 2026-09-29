@@ -309,56 +309,192 @@ class ProductUnitController extends BaseController
             }
         }
 
-        //    File wajib
-
+        // Validasi File QC.
         $unboxingVideo = $this->request->getFile('unboxing_video');
         $serialPhoto   = $this->request->getFile('serial_photo');
         $productPhoto  = $this->request->getFile('product_photo');
 
-        $files = [
-            'unboxing_video' => $unboxingVideo,
-            'serial_photo'   => $serialPhoto,
-            'product_photo'  => $productPhoto,
+        $maxImageSize = 1 * 1024 * 1024;
+        $maxVideoSize = 5 * 1024 * 1024;
+
+        $allowedImageExtensions = [
+            'jpg',
+            'jpeg',
+            'png',
+            'webp',
         ];
 
-        foreach ($files as $file) {
+        $allowedImageMimeTypes = [
+            'image/jpeg',
+            'image/png',
+            'image/webp',
+        ];
 
+        $allowedVideoExtensions = [
+            'mp4',
+            'mov',
+            'webm',
+        ];
+
+        $allowedVideoMimeTypes = [
+            'video/mp4',
+            'video/quicktime',
+            'video/webm',
+        ];
+
+        $files = [
+            'unboxing_video' => [
+                'file'       => $unboxingVideo,
+                'extensions' => $allowedVideoExtensions,
+                'mime_types' => $allowedVideoMimeTypes,
+                'max_size'   => $maxVideoSize,
+                'label'      => 'Video unboxing',
+            ],
+            'serial_photo' => [
+                'file'       => $serialPhoto,
+                'extensions' => $allowedImageExtensions,
+                'mime_types' => $allowedImageMimeTypes,
+                'max_size'   => $maxImageSize,
+                'label'      => 'Foto nomor serial',
+            ],
+            'product_photo' => [
+                'file'       => $productPhoto,
+                'extensions' => $allowedImageExtensions,
+                'mime_types' => $allowedImageMimeTypes,
+                'max_size'   => $maxImageSize,
+                'label'      => 'Foto produk',
+            ],
+        ];
+
+        foreach ($files as $fileData) {
+
+            $file = $fileData['file'];
+
+            // File wajib diunggah.
             if (!$file || !$file->isValid()) {
+
+                $errorCode = $file
+                    ? $file->getError()
+                    : UPLOAD_ERR_NO_FILE;
+
                 return redirect()
                     ->back()
                     ->withInput()
-                    ->with('error', 'Semua dokumentasi QC wajib diunggah.');
+                    ->with(
+                        'error',
+                        $fileData['label'] . ' wajib diunggah.'
+                    );
             }
-        }
 
-        //    Validasi tipe file di server.
+            // Tolak file yang memiliki upload error.
+            if ($file->getError() !== UPLOAD_ERR_OK) {
 
-        if (
-            !in_array($unboxingVideo->getMimeType(), [
-                'video/mp4',
-                'video/quicktime',
-                'video/webm',
-            ], true)
-        ) {
-            return redirect()
-                ->back()
-                ->withInput()
-                ->with('error', 'Format video unboxing tidak valid.');
-        }
-
-        foreach ([$serialPhoto, $productPhoto] as $image) {
-
-            if (!str_starts_with($image->getMimeType(), 'image/')) {
                 return redirect()
                     ->back()
                     ->withInput()
-                    ->with('error', 'Format foto dokumentasi tidak valid.');
+                    ->with(
+                        'error',
+                        'Upload ' . strtolower($fileData['label']) . ' gagal.'
+                    );
+            }
+
+            // Ambil extension dari nama file yang dikirim client.
+            $clientExtension = strtolower(
+                ltrim($file->getClientExtension(), '.')
+            );
+
+            // Ambil extension hasil deteksi server.
+            $detectedExtension = strtolower(
+                ltrim($file->getExtension(), '.')
+            );
+
+            // Extension harus termasuk whitelist.
+            if (
+                !in_array(
+                    $clientExtension,
+                    $fileData['extensions'],
+                    true
+                )
+            ) {
+
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with(
+                        'error',
+                        $fileData['label'] . ' memiliki format yang tidak diizinkan.'
+                    );
+            }
+
+            // Extension client harus sesuai dengan extension hasil deteksi server.
+            if (
+                $detectedExtension === '' ||
+                !in_array(
+                    $detectedExtension,
+                    $fileData['extensions'],
+                    true
+                ) ||
+                $clientExtension !== $detectedExtension
+            ) {
+
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with(
+                        'error',
+                        'Extension ' . strtolower($fileData['label']) . ' tidak valid.'
+                    );
+            }
+
+            // MIME type harus termasuk whitelist.
+            $mimeType = $file->getMimeType();
+
+            if (!in_array($mimeType, $fileData['mime_types'], true)) {
+
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with(
+                        'error',
+                        'Tipe file ' . strtolower($fileData['label']) . ' tidak valid.'
+                    );
+            }
+
+            // Validasi ukuran file.
+            if ($file->getSize() > $fileData['max_size']) {
+
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with(
+                        'error',
+                        $fileData['label'] . ' melebihi ukuran maksimum yang diizinkan.'
+                    );
+            }
+
+            // Tolak nama file yang mengandung pola double extension.
+            $originalName = strtolower($file->getClientName());
+
+            if (
+                preg_match(
+                    '/\.(php|phtml|phar|php[0-9]?|cgi|pl|py|sh|exe|dll|bat|cmd)(\.|$)/',
+                    $originalName
+                )
+            ) {
+
+                return redirect()
+                    ->back()
+                    ->withInput()
+                    ->with(
+                        'error',
+                        $fileData['label'] . ' memiliki nama file yang tidak aman.'
+                    );
             }
         }
 
         //    Direktori Penyimpanan
 
-        $uploadPath = FCPATH . 'uploads/qc/' . $unit['id'];
+        $uploadPath = WRITEPATH . 'uploads/qc/' . $unit['id'];
 
         if (!is_dir($uploadPath)) {
             mkdir($uploadPath, 0755, true);
@@ -429,7 +565,7 @@ class ProductUnitController extends BaseController
 
                 $savedPath = 'uploads/qc/' . $unit['id'] . '/' . $newName;
 
-                $savedFiles[] = FCPATH . $savedPath;
+                $savedFiles[] = WRITEPATH . $savedPath;
 
                 $documentationModel->insert([
                     'qc_inspection_id' => $inspectionId,
