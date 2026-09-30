@@ -116,7 +116,8 @@
                                         type="button"
                                         class="button button-icon button-icon-view"
                                         data-tooltip="Pilih Unit"
-                                        aria-label="Pilih Unit">
+                                        aria-label="Pilih Unit"
+                                        data-modal-open="sales-select-modal-<?= esc($unit['id']) ?>">
 
                                         <svg
                                             viewBox="0 0 24 24"
@@ -127,9 +128,9 @@
                                             stroke-linejoin="round"
                                             aria-hidden="true">
 
-                                            <path d="M5 12h14"></path>
+                                            <rect x="4" y="4" width="16" height="16" rx="3"></rect>
 
-                                            <path d="m13 6 6 6-6 6"></path>
+                                            <path d="m8 12 2.5 2.5L16 9"></path>
 
                                         </svg>
 
@@ -148,6 +149,14 @@
             </table>
 
         </div>
+
+        <?php foreach ($units as $unit): ?>
+
+            <?= view('admin/sales/select', [
+                'unit' => $unit,
+            ]) ?>
+
+        <?php endforeach; ?>
 
     <?php endif; ?>
 
