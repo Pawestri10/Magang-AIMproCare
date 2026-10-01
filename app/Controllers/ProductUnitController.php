@@ -58,24 +58,17 @@ class ProductUnitController extends BaseController
             ->orderBy('id', 'ASC')
             ->findAll();
 
-        // Kelompokkan checklist berdasarkan pemeriksaan.
-
         $checklistByInspection = [];
 
         foreach ($checklists as $checklist) {
             $checklistByInspection[$checklist['qc_inspection_id']][] = $checklist;
         }
 
-
-        // Kelompokkan dokumentasi berdasarkan pemeriksaan.
-
         $documentationByInspection = [];
 
         foreach ($documentations as $documentation) {
             $documentationByInspection[$documentation['qc_inspection_id']][] = $documentation;
         }
-
-        // Gabungkan checklist dan dokumentasi ke masing-masing data pemeriksaan.
 
         foreach ($inspections as &$inspection) {
 
@@ -87,8 +80,6 @@ class ProductUnitController extends BaseController
         }
 
         unset($inspection);
-
-        // Kelompokkan pemeriksaan berdasarkan unit produk.
 
         $inspectionHistory = [];
 
@@ -231,8 +222,6 @@ class ProductUnitController extends BaseController
                 ->with('error', 'Unit produk tidak ditemukan.');
         }
 
-        // Unit hanya boleh diperiksa ketika masih menunggu QC.
-
         if (!in_array($unit['status'], ['Menunggu QC', 'Perlu Pemeriksaan Ulang'], true)) {
             return redirect()
                 ->to(base_url('qc/product-units'))
@@ -241,8 +230,6 @@ class ProductUnitController extends BaseController
 
         $checklist = $this->request->getPost('checklist');
         $result    = $this->request->getPost('result');
-
-        // Validasi server-side
 
         $validation = service('validation');
 
@@ -277,8 +264,6 @@ class ProductUnitController extends BaseController
                 ->with('errors', $validation->getErrors());
         }
 
-        // Checklist wajib berjumlah 7 item.
-
         if (!is_array($checklist) || count($checklist) !== 7) {
             return redirect()
                 ->back()
@@ -309,7 +294,6 @@ class ProductUnitController extends BaseController
             }
         }
 
-        // Validasi File QC.
         $unboxingVideo = $this->request->getFile('unboxing_video');
         $serialPhoto   = $this->request->getFile('serial_photo');
         $productPhoto  = $this->request->getFile('product_photo');
@@ -370,7 +354,6 @@ class ProductUnitController extends BaseController
 
             $file = $fileData['file'];
 
-            // File wajib diunggah.
             if (!$file || !$file->isValid()) {
 
                 $errorCode = $file
@@ -386,7 +369,6 @@ class ProductUnitController extends BaseController
                     );
             }
 
-            // Tolak file yang memiliki upload error.
             if ($file->getError() !== UPLOAD_ERR_OK) {
 
                 return redirect()
@@ -398,17 +380,14 @@ class ProductUnitController extends BaseController
                     );
             }
 
-            // Ambil extension dari nama file yang dikirim client.
             $clientExtension = strtolower(
                 ltrim($file->getClientExtension(), '.')
             );
 
-            // Ambil extension hasil deteksi server.
             $detectedExtension = strtolower(
                 ltrim($file->getExtension(), '.')
             );
 
-            // Extension harus termasuk whitelist.
             if (
                 !in_array(
                     $clientExtension,
@@ -426,7 +405,6 @@ class ProductUnitController extends BaseController
                     );
             }
 
-            // Extension client harus sesuai dengan extension hasil deteksi server.
             if (
                 $detectedExtension === '' ||
                 !in_array(
@@ -446,7 +424,6 @@ class ProductUnitController extends BaseController
                     );
             }
 
-            // MIME type harus termasuk whitelist.
             $mimeType = $file->getMimeType();
 
             if (!in_array($mimeType, $fileData['mime_types'], true)) {
@@ -460,7 +437,6 @@ class ProductUnitController extends BaseController
                     );
             }
 
-            // Validasi ukuran file.
             if ($file->getSize() > $fileData['max_size']) {
 
                 return redirect()
@@ -472,7 +448,6 @@ class ProductUnitController extends BaseController
                     );
             }
 
-            // Tolak nama file yang mengandung pola double extension.
             $originalName = strtolower($file->getClientName());
 
             if (
@@ -492,8 +467,6 @@ class ProductUnitController extends BaseController
             }
         }
 
-        //    Direktori Penyimpanan
-
         $uploadPath = WRITEPATH . 'uploads/qc/' . $unit['id'];
 
         if (!is_dir($uploadPath)) {
@@ -507,8 +480,6 @@ class ProductUnitController extends BaseController
         $db->transStart();
 
         try {
-
-            // Simpan Pemeriksaan QC
 
             $inspectionId = $inspectionModel->insert([
                 'product_unit_id'   => $unit['id'],
@@ -524,8 +495,6 @@ class ProductUnitController extends BaseController
                 throw new \RuntimeException('Gagal menyimpan pemeriksaan QC.');
             }
 
-            // Simpan 7 Checklist
-
             foreach ($checklistItems as $index => $itemName) {
 
                 $checklistModel->insert([
@@ -535,8 +504,6 @@ class ProductUnitController extends BaseController
                     'notes'            => null,
                 ]);
             }
-
-            // Simpan Dokumentasi file
 
             $documentationFiles = [
                 [
@@ -573,8 +540,6 @@ class ProductUnitController extends BaseController
                     'file_path'        => $savedPath,
                 ]);
             }
-
-            // Hasil QC menentukan status unit
 
             $statusMap = [
                 'Lolos QC'                => 'Siap Dijual',

@@ -198,7 +198,7 @@
                 <button
                     type="button"
                     class="button button-primary"
-                    data-modal-close>
+                    data-sales-next="sales-customer-modal-<?= esc($unit['id']) ?>">
 
                     Pilih Unit
 

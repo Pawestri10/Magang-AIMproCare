@@ -16,7 +16,6 @@ class QcDocumentationController extends BaseController
 
     public function show($id)
     {
-        // Cari dokumentasi berdasarkan ID.
         $documentation = $this->qcDocumentationModel->find($id);
 
         if (!$documentation) {
@@ -25,7 +24,6 @@ class QcDocumentationController extends BaseController
             );
         }
 
-        // Pastikan path file berasal dari storage QC.
         $relativePath = $documentation['file_path'];
 
         if (
@@ -38,10 +36,8 @@ class QcDocumentationController extends BaseController
             );
         }
 
-        // Tentukan lokasi fisik file di secure storage.
         $filePath = WRITEPATH . $relativePath;
 
-        // Pastikan file berada di dalam direktori storage QC.
         $qcStoragePath = realpath(WRITEPATH . 'uploads/qc');
 
         if ($qcStoragePath === false) {

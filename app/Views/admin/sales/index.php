@@ -156,6 +156,15 @@
                 'unit' => $unit,
             ]) ?>
 
+            <?= view('admin/sales/customer', [
+                'unit' => $unit,
+                'customers' => $customers,
+            ]) ?>
+
+            <?= view('admin/sales/transaction', [
+                'unit' => $unit,
+            ]) ?>
+
         <?php endforeach; ?>
 
     <?php endif; ?>

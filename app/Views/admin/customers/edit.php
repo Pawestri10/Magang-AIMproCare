@@ -162,10 +162,6 @@
                                     placeholder="Contoh: nama@email.com"
                                     autocomplete="email">
 
-                                <span class="form-helper">
-                                    Opsional.
-                                </span>
-
                             </div>
 
                         </div>

@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/pages/product-units.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/pages/sales.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/pages/activity-logs.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/components/alerts.css') ?>">
 
     <?= $this->renderSection('styles') ?>
 
@@ -47,6 +48,8 @@
 
             <main class="app-content">
 
+                <?= $this->include('components/alert') ?>
+
                 <?= $this->renderSection('content') ?>
 
             </main>
@@ -58,6 +61,19 @@
     <?= $this->include('components/mobile-nav') ?>
 
     <script src="<?= base_url('assets/js/components/modal.js') ?>"></script>
+
+    <script>
+        document.querySelectorAll('.alert').forEach((alert) => {
+            setTimeout(() => {
+                alert.classList.add('is-hiding');
+
+                setTimeout(() => {
+                    alert.remove();
+                }, 250);
+            }, 5000);
+        });
+    </script>
+
     <script src="<?= base_url('assets/js/pages/product-units.js') ?>"></script>
 
     <?= $this->renderSection('scripts') ?>

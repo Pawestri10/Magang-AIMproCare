@@ -39,4 +39,6 @@ $routes->post('admin/customers/(:num)/delete', 'CustomerController::delete/$1', 
 
 $routes->get('admin/sales', 'Admin\SalesController::index', ['filter' => 'auth:Administrator']);
 
+$routes->post('admin/sales', 'Admin\SalesController::store', ['filter' => ['auth:Administrator', 'csrf',],]);
+
 $routes->get('admin/activity-log', 'Admin\ActivityLogController::index', ['filter' => 'auth:Administrator']);

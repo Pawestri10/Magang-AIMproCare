@@ -25,13 +25,11 @@ class ActivityLogModel extends Model
     protected array $casts = [];
     protected array $castHandlers = [];
 
-    // Dates
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
 
-    // Validation
     protected $validationRules = [
         'user_id' => 'required|is_natural_no_zero',
         'action' => 'required|max_length[100]',
@@ -56,7 +54,6 @@ class ActivityLogModel extends Model
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
 
-    // Callbacks
     protected $allowCallbacks = true;
     protected $beforeInsert   = [];
     protected $afterInsert    = [];
