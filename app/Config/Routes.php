@@ -41,4 +41,6 @@ $routes->get('admin/sales', 'Admin\SalesController::index', ['filter' => 'auth:A
 
 $routes->post('admin/sales', 'Admin\SalesController::store', ['filter' => ['auth:Administrator', 'csrf',],]);
 
+$routes->get('admin/sales/(:num)', 'Admin\SalesController::detail/$1', ['filter' => 'auth:Administrator',]);
+
 $routes->get('admin/activity-log', 'Admin\ActivityLogController::index', ['filter' => 'auth:Administrator']);
