@@ -1,0 +1,314 @@
+.warranty-card {
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    overflow: hidden;
+    background: #14171B;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+}
+
+.warranty-card-header {
+    padding: 32px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(255, 255, 255, 0.06);
+}
+
+.warranty-card-company {
+    color: #F5F5F5;
+    font-size: 24px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.warranty-card-title {
+    margin-top: 6px;
+    color: #8B919A;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+}
+
+.warranty-card-body {
+    padding: 32px;
+}
+
+.warranty-card-section {
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.warranty-card-section:first-child {
+    padding-top: 0;
+}
+
+.warranty-card-section-title {
+    margin-bottom: 8px;
+    color: #8B919A;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.warranty-card-value {
+    color: #F5F5F5;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.warranty-card-meta {
+    margin-top: 3px;
+    color: #C7CBD1;
+    font-size: 13px;
+}
+
+.warranty-card-meta span {
+    margin: 0 4px;
+    color: #8B919A;
+}
+
+.warranty-card-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.warranty-card-grid-three {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.warranty-card-label {
+    margin-bottom: 5px;
+    color: #8B919A;
+    font-size: 11px;
+}
+
+.warranty-card-status-section {
+    padding: 20px 0;
+}
+
+.warranty-card-status {
+    display: inline-flex;
+    align-items: center;
+    min-height: 32px;
+    padding: 6px 12px;
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    border-radius: 999px;
+    background: rgba(34, 197, 94, 0.10);
+    color: #22C55E;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.warranty-card-qr-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 28px 0;
+    text-align: center;
+}
+
+.warranty-card-qr {
+    width: 220px;
+    height: 220px;
+    padding: 14px;
+    background: #FFFFFF;
+    border-radius: 16px;
+}
+
+.warranty-card-qr svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.warranty-card-qr-text {
+    margin-top: 14px;
+    color: #8B919A;
+    font-size: 12px;
+}
+
+.warranty-card-terms {
+    margin-top: 8px;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.warranty-card-terms p {
+    margin: 0;
+    color: #C7CBD1;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.warranty-card-modal-dialog {
+    width: min(900px, calc(100vw - 32px));
+    max-width: 900px;
+}
+
+.warranty-card-modal-body {
+    padding: 24px;
+    overflow-y: auto;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.warranty-card-modal-body .warranty-card {
+    max-width: 760px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.30);
+}
+
+.warranty-card-print-button {
+    min-width: 0;
+    padding: 10px 14px;
+    gap: 8px;
+}
+
+.warranty-card-print-button svg {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+}
+
+.warranty-card-print-button span {
+    white-space: nowrap;
+}
+
+@media (max-width: 640px) {
+    .warranty-card-modal-dialog {
+        width: calc(100vw - 20px);
+    }
+
+    .warranty-card-modal-body {
+        padding: 16px;
+    }
+
+    .warranty-card-header,
+    .warranty-card-body {
+        padding: 24px;
+    }
+
+    .warranty-card-grid,
+    .warranty-card-grid-three {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .warranty-card-company {
+        font-size: 21px;
+    }
+
+    .warranty-card-qr {
+        width: 200px;
+        height: 200px;
+    }
+}
+
+@media print {
+    @page {
+        size: A4;
+        margin: 12mm;
+    }
+
+    body {
+        margin: 0 !important;
+        background: #FFFFFF !important;
+    }
+
+    body > * {
+        visibility: hidden !important;
+    }
+
+    .warranty-card-modal,
+    .warranty-card-modal * {
+        visibility: visible !important;
+    }
+
+    .warranty-card-modal {
+        position: absolute !important;
+        inset: 0 !important;
+        display: block !important;
+        width: 100% !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        overflow: visible !important;
+    }
+
+    .warranty-card-modal .modal-overlay,
+    .warranty-card-modal .modal-header,
+    .warranty-card-modal .modal-footer {
+        display: none !important;
+    }
+
+    .warranty-card-modal .modal-dialog {
+        position: static !important;
+        width: 100% !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: 0 !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        transform: none !important;
+    }
+
+    .warranty-card-modal .modal-body {
+        padding: 0 !important;
+        overflow: visible !important;
+    }
+
+    .warranty-card {
+        width: 100% !important;
+        max-width: 760px !important;
+        margin: 0 auto !important;
+        border: 1px solid #D1D5DB !important;
+        border-radius: 16px !important;
+        box-shadow: none !important;
+        background: #FFFFFF !important;
+        color: #111827 !important;
+    }
+
+    .warranty-card-header {
+        background: #FFFFFF !important;
+        border-bottom: 1px solid #D1D5DB !important;
+    }
+
+    .warranty-card-company,
+    .warranty-card-value {
+        color: #111827 !important;
+    }
+
+    .warranty-card-title,
+    .warranty-card-section-title,
+    .warranty-card-label,
+    .warranty-card-qr-text {
+        color: #6B7280 !important;
+    }
+
+    .warranty-card-meta,
+    .warranty-card-terms p {
+        color: #374151 !important;
+    }
+
+    .warranty-card-section {
+        border-bottom-color: #E5E7EB !important;
+    }
+
+    .warranty-card-status {
+        border-color: #BBF7D0 !important;
+        background: #F0FDF4 !important;
+        color: #15803D !important;
+    }
+
+    .warranty-card-terms {
+        border-color: #E5E7EB !important;
+        background: #F9FAFB !important;
+    }
+}

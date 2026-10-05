@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/pages/sales.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/pages/activity-logs.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/components/alerts.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/pages/warranty-card.css') ?>">
 
     <?= $this->renderSection('styles') ?>
 

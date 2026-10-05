@@ -330,20 +330,37 @@
                                             stroke-linejoin="round"
                                             aria-hidden="true">
 
-                                            <rect
-                                                x="3"
-                                                y="4"
-                                                width="18"
-                                                height="16"
-                                                rx="3">
-                                            </rect>
+                                            <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
 
-                                            <path d="M8 9h8"></path>
-
-                                            <path d="M8 13h5"></path>
+                                            <circle
+                                                cx="12"
+                                                cy="12"
+                                                r="2.5">
+                                            </circle>
 
                                         </svg>
 
+                                    </button>
+
+                                    <button
+                                        type="button"
+                                        class="button button-icon button-icon-warranty"
+                                        data-tooltip="Lihat Kartu Garansi"
+                                        aria-label="Lihat Kartu Garansi"
+                                        data-modal-open="warranty-card-modal-<?= esc($sale['id']) ?>">
+                                        <svg
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.8"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            aria-hidden="true">
+                                            <path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" />
+                                            <path d="M8 7h8" />
+                                            <path d="M8 11h8" />
+                                            <path d="M8 15h4" />
+                                        </svg>
                                     </button>
 
                                 </div>
@@ -390,5 +407,22 @@
 
 <?php endforeach; ?>
 
+<?php foreach ($sales as $sale): ?>
+    <?= view('admin/warranty/card', ['sale' => $sale]) ?>
+<?php endforeach; ?>
+
+<script>
+    document.addEventListener('click', function(event) {
+
+        const printButton = event.target.closest('[data-warranty-print]');
+
+        if (!printButton) {
+            return;
+        }
+
+        window.print();
+
+    });
+</script>
 
 <?= $this->endSection() ?>
