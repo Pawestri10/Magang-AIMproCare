@@ -44,3 +44,9 @@ $routes->post('admin/sales', 'Admin\SalesController::store', ['filter' => ['auth
 $routes->get('admin/sales/(:num)', 'Admin\SalesController::detail/$1', ['filter' => 'auth:Administrator',]);
 
 $routes->get('admin/activity-log', 'Admin\ActivityLogController::index', ['filter' => 'auth:Administrator']);
+
+$routes->get('cek-garansi', 'PublicWarrantyController::index');
+
+$routes->post('cek-garansi', 'PublicWarrantyController::search');
+
+$routes->get('cek-garansi/(:segment)', 'PublicWarrantyController::show/$1');

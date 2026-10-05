@@ -68,4 +68,37 @@ class WarrantyModel extends Model
             'max_length' => 'QR token maksimal 255 karakter.',
         ],
     ];
+
+    public function findPublicByIdentifier(string $identifier): ?array
+    {
+        return $this
+            ->select([
+                'warranties.id',
+                'warranties.warranty_number',
+                'warranties.start_date AS warranty_start_date',
+                'warranties.end_date AS warranty_end_date',
+                'warranties.status AS warranty_status',
+                'product_units.serial_number',
+                'products.name AS product_name',
+                'products.brand',
+                'products.model',
+                'customers.name AS customer_name',
+                'customers.whatsapp AS customer_whatsapp',
+                'qc_inspections.result AS qc_result',
+            ])
+            ->join('sales', 'sales.id = warranties.sale_id')
+            ->join('product_units', 'product_units.id = sales.product_unit_id')
+            ->join('products', 'products.id = product_units.product_id')
+            ->join('customers', 'customers.id = sales.customer_id')
+            ->join(
+                'qc_inspections',
+                'qc_inspections.product_unit_id = product_units.id',
+                'left'
+            )
+            ->groupStart()
+            ->where('warranties.warranty_number', $identifier)
+            ->orWhere('product_units.serial_number', $identifier)
+            ->groupEnd()
+            ->first();
+    }
 }
