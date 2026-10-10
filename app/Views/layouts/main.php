@@ -32,6 +32,8 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/pages/activity-logs.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/components/alerts.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/pages/warranty-card.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/pages/dashboard.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/pages/reports.css') ?>">
 
     <?= $this->renderSection('styles') ?>
 
@@ -39,7 +41,7 @@
 
 <body>
 
-    <div class="app-shell">
+    <div class=" app-shell">
 
         <?= $this->include('components/sidebar') ?>
 

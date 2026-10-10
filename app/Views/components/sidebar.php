@@ -117,7 +117,7 @@
 
                     <li class="sidebar-menu-item">
                         <a
-                            href="#"
+                            href="<?= site_url('admin/reports') ?>"
                             class="sidebar-menu-link">
 
                             <span class="sidebar-menu-label">

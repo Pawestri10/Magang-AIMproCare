@@ -1,0 +1,45 @@
+.report-filter-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.report-filter-grid .form-group {
+    min-width: 0;
+}
+
+.report-filter-grid [hidden] {
+    display: none !important;
+}
+
+.report-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.report-result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+@media (max-width: 900px) {
+    .report-filter-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .report-filter-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .report-result-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

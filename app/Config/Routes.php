@@ -45,6 +45,12 @@ $routes->get('admin/claims', 'Admin\ClaimController::index', ['filter' => 'auth:
 $routes->post('admin/claims/(:num)/status', 'Admin\ClaimController::updateStatus/$1', ['filter' => ['auth:Administrator', 'csrf']]);
 $routes->get('admin/claims/(:num)/evidence/(:segment)', 'Admin\ClaimController::evidence/$1/$2', ['filter' => 'auth:Administrator']);
 
+$routes->group('admin', ['filter' => 'auth:Administrator',], static function ($routes) {
+    $routes->get('reports', 'Admin\ReportController::index');
+    $routes->get('reports/export/excel', 'Admin\ReportController::exportExcel');
+    $routes->get('reports/export/pdf', 'Admin\ReportController::exportPdf');
+});
+
 $routes->get('admin/activity-log', 'Admin\ActivityLogController::index', ['filter' => 'auth:Administrator']);
 
 $routes->get('cek-garansi', 'PublicWarrantyController::index');
