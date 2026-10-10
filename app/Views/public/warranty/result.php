@@ -141,6 +141,12 @@
                 tercatat pada sistem AIMPro Technology.
             </div>
 
+            <a
+                href="<?= base_url('klaim-garansi') ?>"
+                class="public-warranty-back-button">
+                Ajukan Klaim Garansi
+            </a>
+
         <?php else: ?>
 
             <div class="public-warranty-result-card public-warranty-empty">

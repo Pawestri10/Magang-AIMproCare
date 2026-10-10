@@ -38,15 +38,20 @@ $routes->post('admin/customers/(:num)', 'CustomerController::update/$1', ['filte
 $routes->post('admin/customers/(:num)/delete', 'CustomerController::delete/$1', ['filter' => 'auth:Administrator']);
 
 $routes->get('admin/sales', 'Admin\SalesController::index', ['filter' => 'auth:Administrator']);
-
 $routes->post('admin/sales', 'Admin\SalesController::store', ['filter' => ['auth:Administrator', 'csrf',],]);
-
 $routes->get('admin/sales/(:num)', 'Admin\SalesController::detail/$1', ['filter' => 'auth:Administrator',]);
+
+$routes->get('admin/claims', 'Admin\ClaimController::index', ['filter' => 'auth:Administrator']);
+$routes->post('admin/claims/(:num)/status', 'Admin\ClaimController::updateStatus/$1', ['filter' => ['auth:Administrator', 'csrf']]);
+$routes->get('admin/claims/(:num)/evidence/(:segment)', 'Admin\ClaimController::evidence/$1/$2', ['filter' => 'auth:Administrator']);
 
 $routes->get('admin/activity-log', 'Admin\ActivityLogController::index', ['filter' => 'auth:Administrator']);
 
 $routes->get('cek-garansi', 'PublicWarrantyController::index');
-
 $routes->post('cek-garansi', 'PublicWarrantyController::search');
-
 $routes->get('cek-garansi/(:segment)', 'PublicWarrantyController::show/$1');
+
+$routes->get('klaim-garansi', 'PublicClaimController::index');
+$routes->post('klaim-garansi', 'PublicClaimController::store', ['filter' => 'csrf',]);
+$routes->get('klaim-garansi/berhasil/(:segment)', 'PublicClaimController::success/$1');
+$routes->get('klaim-garansi/lacak/(:segment)', 'PublicClaimController::track/$1');

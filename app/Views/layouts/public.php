@@ -22,6 +22,9 @@
     <link
         rel="stylesheet"
         href="<?= base_url('assets/css/pages/public-warranty.css') ?>">
+    <link
+        rel="stylesheet"
+        href="<?= base_url('assets/css/pages/public-claim.css') ?>">
 </head>
 
 <body class="public-page">
