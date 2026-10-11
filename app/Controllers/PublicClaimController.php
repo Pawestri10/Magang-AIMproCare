@@ -6,6 +6,7 @@ use App\Models\WarrantyModel;
 use App\Models\WarrantyClaimModel;
 use App\Models\ClaimHistoryModel;
 use App\Services\ClaimNumberService;
+use App\Services\WakitaService;
 
 class PublicClaimController extends BaseController
 {
@@ -13,6 +14,7 @@ class PublicClaimController extends BaseController
     protected WarrantyClaimModel $warrantyClaimModel;
     protected ClaimHistoryModel $claimHistoryModel;
     protected ClaimNumberService $claimNumberService;
+    protected WakitaService $wakitaService;
 
     public function __construct()
     {
@@ -20,6 +22,7 @@ class PublicClaimController extends BaseController
         $this->warrantyClaimModel = new WarrantyClaimModel();
         $this->claimHistoryModel = new ClaimHistoryModel();
         $this->claimNumberService = new ClaimNumberService();
+        $this->wakitaService = new WakitaService();
     }
 
     public function index()
@@ -317,6 +320,32 @@ class PublicClaimController extends BaseController
                     'error',
                     'Pengajuan klaim gagal. Tidak ada perubahan data yang disimpan.'
                 );
+        }
+
+        try {
+            $notificationResult = $this->wakitaService->sendTemplate(
+                'claim_submitted',
+                $whatsapp,
+                [
+                    'nama' => 'Pelanggan',
+                    'nomor_klaim' => $claimNumber,
+                    'status' => 'Pengajuan Baru',
+                ]
+            );
+
+            if (!($notificationResult['success'] ?? false)) {
+                log_message(
+                    'warning',
+                    'Notifikasi pengajuan klaim gagal dikirim. Nomor klaim: '
+                        . $claimNumber
+                );
+            }
+        } catch (\Throwable $e) {
+            log_message(
+                'error',
+                'Terjadi kesalahan saat mengirim notifikasi klaim '
+                    . $claimNumber . ': ' . $e->getMessage()
+            );
         }
 
         return redirect()

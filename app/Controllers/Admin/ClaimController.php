@@ -4,6 +4,7 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 use App\Models\WarrantyClaimModel;
+use App\Services\WakitaService;
 
 class ClaimController extends BaseController
 {
@@ -201,6 +202,63 @@ class ClaimController extends BaseController
                     'error',
                     'Perubahan status klaim gagal. Tidak ada perubahan data yang disimpan.'
                 );
+        }
+
+        try {
+            $claimDetails = $this->warrantyClaimModel
+                ->findAdminClaimDetails([$claimId]);
+
+            $whatsapp = '';
+
+            if (
+                isset($claimDetails[$claimId]) &&
+                is_array($claimDetails[$claimId])
+            ) {
+                $whatsapp = (string) (
+                    $claimDetails[$claimId]['whatsapp'] ?? ''
+                );
+            }
+
+            if ($whatsapp !== '') {
+                $templateKey = $newStatus === 'Selesai'
+                    ? 'claim_completed'
+                    : 'claim_status_changed';
+
+                $wakitaService = new WakitaService();
+
+                $notificationResult = $wakitaService->sendTemplate(
+                    $templateKey,
+                    $whatsapp,
+                    [
+                        'nama' => $claimDetails[$claimId]['customer_name'] ?? 'Pelanggan',
+                        'nomor_klaim' => $claim['claim_number'],
+                        'status' => $newStatus,
+                        'catatan' => $note,
+                    ]
+                );
+
+                if (! ($notificationResult['success'] ?? false)) {
+                    log_message(
+                        'warning',
+                        'Notifikasi perubahan status klaim gagal. Nomor klaim: '
+                            . $claim['claim_number']
+                    );
+                }
+            } else {
+                log_message(
+                    'warning',
+                    'Nomor WhatsApp pelanggan tidak ditemukan untuk klaim: '
+                        . $claim['claim_number']
+                );
+            }
+        } catch (\Throwable $e) {
+            log_message(
+                'error',
+                'Kesalahan notifikasi perubahan status klaim '
+                    . $claim['claim_number']
+                    . ': '
+                    . $e->getMessage()
+            );
         }
 
         return redirect()

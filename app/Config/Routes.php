@@ -49,6 +49,22 @@ $routes->group('admin', ['filter' => 'auth:Administrator',], static function ($r
     $routes->get('reports', 'Admin\ReportController::index');
     $routes->get('reports/export/excel', 'Admin\ReportController::exportExcel');
     $routes->get('reports/export/pdf', 'Admin\ReportController::exportPdf');
+    $routes->get(
+        'notification-settings',
+        'Admin\NotificationSettingsController::index'
+    );
+
+    $routes->post(
+        'notification-settings/save',
+        'Admin\NotificationSettingsController::save',
+        ['filter' => 'csrf']
+    );
+
+    $routes->post(
+        'notification-settings/api-key',
+        'Admin\NotificationSettingsController::saveApiKey',
+        ['filter' => 'csrf']
+    );
 });
 
 $routes->get('admin/activity-log', 'Admin\ActivityLogController::index', ['filter' => 'auth:Administrator']);

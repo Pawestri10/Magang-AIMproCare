@@ -101,4 +101,30 @@ class WarrantyModel extends Model
             ->groupEnd()
             ->first();
     }
+
+
+    public function findExpiringWarranties(int $reminderDays): array
+    {
+        $targetDate = date(
+            'Y-m-d',
+            strtotime('+' . $reminderDays . ' days')
+        );
+
+        return $this
+            ->select([
+                'warranties.id AS warranty_id',
+                'warranties.warranty_number',
+                'warranties.end_date',
+                'customers.name AS customer_name',
+                'customers.whatsapp AS customer_whatsapp',
+                'products.name AS product_name',
+            ])
+            ->join('sales', 'sales.id = warranties.sale_id')
+            ->join('customers', 'customers.id = sales.customer_id')
+            ->join('product_units', 'product_units.id = sales.product_unit_id')
+            ->join('products', 'products.id = product_units.product_id')
+            ->where('warranties.status', 'Garansi Aktif')
+            ->where('warranties.end_date', $targetDate)
+            ->findAll();
+    }
 }

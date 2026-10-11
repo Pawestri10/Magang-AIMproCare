@@ -12,6 +12,7 @@ use App\Services\QrTokenService;
 use CodeIgniter\Database\Exceptions\DatabaseException;
 use App\Models\WarrantyModel;
 use App\Services\QrCodeService;
+use App\Services\WakitaService;
 
 class SalesController extends BaseController
 {
@@ -609,6 +610,68 @@ class SalesController extends BaseController
                 $warrantyNumber .
                 '.'
         );
+
+        try {
+            $wakitaService = new WakitaService();
+
+            $notificationResult = $wakitaService->sendTemplate(
+                'warranty_activated',
+                (string) ($customer['whatsapp'] ?? ''),
+                [
+                    'nama' => $customer['name'] ?? 'Pelanggan',
+                    'nomor_garansi' => $warrantyNumber,
+                    'tanggal_mulai' => date('d/m/Y', strtotime($startDate)),
+                    'tanggal_berakhir' => date('d/m/Y', strtotime($endDate)),
+                ]
+            );
+
+            if (!($notificationResult['success'] ?? false)) {
+                log_message(
+                    'warning',
+                    'Notifikasi aktivasi garansi gagal dikirim untuk nomor garansi ' .
+                        $warrantyNumber
+                );
+            }
+        } catch (\Throwable $e) {
+            log_message(
+                'error',
+                'Kesalahan pengiriman notifikasi aktivasi garansi untuk nomor garansi ' .
+                    $warrantyNumber . ': ' . $e->getMessage()
+            );
+        }
+
+        try {
+            $wakitaService = new WakitaService();
+            $qrCodeService = new QrCodeService();
+
+            $warrantyUrl = $qrCodeService->generateWarrantyUrl(
+                $qrToken
+            );
+
+            $cardNotificationResult = $wakitaService->sendTemplate(
+                'warranty_card_issued',
+                (string) ($customer['whatsapp'] ?? ''),
+                [
+                    'nama' => $customer['name'] ?? 'Pelanggan',
+                    'nomor_garansi' => $warrantyNumber,
+                    'tautan_kartu' => $warrantyUrl,
+                ]
+            );
+
+            if (!($cardNotificationResult['success'] ?? false)) {
+                log_message(
+                    'warning',
+                    'Notifikasi kartu garansi gagal dikirim untuk nomor garansi ' .
+                        $warrantyNumber
+                );
+            }
+        } catch (\Throwable $e) {
+            log_message(
+                'error',
+                'Kesalahan pengiriman kartu garansi untuk nomor garansi ' .
+                    $warrantyNumber . ': ' . $e->getMessage()
+            );
+        }
 
         return redirect()
             ->to('/admin/sales')
