@@ -16,18 +16,22 @@ class ActivityLogController extends BaseController
 
     public function index()
     {
+        $totalLogs = $this->activityLogModel->countAllResults();
+
         $logs = $this->activityLogModel
             ->select('
-                activity_logs.*,
-                users.name AS user_name
-            ')
+        activity_logs.*,
+        users.name AS user_name
+    ')
             ->join('users', 'users.id = activity_logs.user_id')
             ->orderBy('activity_logs.created_at', 'DESC')
             ->orderBy('activity_logs.id', 'DESC')
-            ->findAll();
+            ->paginate(10);
 
         return view('admin/activity_logs/index', [
             'logs' => $logs,
+            'pager' => $this->activityLogModel->pager,
+            'totalLogs' => $totalLogs,
         ]);
     }
 }

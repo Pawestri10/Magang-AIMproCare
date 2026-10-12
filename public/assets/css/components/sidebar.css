@@ -1,7 +1,3 @@
-/* SIDEBAR */
-
-/* Sidebar Container */
-
 .app-sidebar {
     position: fixed;
 
@@ -47,9 +43,6 @@
     z-index: 100;
 }
 
-
-/* Brand */
-
 .sidebar-brand {
     margin-bottom: var(--space-8);
 }
@@ -81,9 +74,6 @@
     line-height: 1.4;
 }
 
-
-/* Navigation */
-
 .sidebar-navigation {
     flex: 1;
     min-height: 0;
@@ -111,9 +101,6 @@
     letter-spacing: 0.08em;
 }
 
-
-/* Menu */
-
 .sidebar-menu {
     display: flex;
     flex-direction: column;
@@ -131,6 +118,7 @@
 
     display: flex;
     align-items: center;
+    gap: var(--space-3);
 
     padding: var(--space-3) var(--space-4);
 
@@ -154,14 +142,15 @@
     border-color: var(--glass-border-subtle);
 }
 
+.sidebar-menu-link.active {
+    border-color: var(--border-color);
+    font-weight: var(--font-weight-semibold);
+}
 
 .sidebar-menu-label {
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
 }
-
-
-/* Submenu */
 
 .sidebar-submenu {
     margin-top: var(--space-1);
@@ -176,9 +165,6 @@
 .sidebar-submenu .sidebar-menu-link {
     padding-left: var(--space-3);
 }
-
-
-/* User Area */
 
 .sidebar-user {
     display: flex;
@@ -214,9 +200,6 @@
     font-size: var(--font-size-xs);
 }
 
-
-/* Logout */
-
 .sidebar-logout {
     min-height: var(--touch-target-min);
 
@@ -248,13 +231,19 @@
     border-color: var(--glass-border);
 }
 
-
-/* Tablet & Mobile */
-
 @media (max-width: 1024px) {
 
     .app-sidebar {
         display: none;
     }
 
+}
+
+.sidebar-navigation {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.sidebar-navigation::-webkit-scrollbar {
+    display: none;
 }

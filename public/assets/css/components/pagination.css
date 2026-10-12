@@ -1,0 +1,128 @@
+.app-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+
+    margin-top: 0;
+    padding: 20px 24px;
+
+    background: transparent;
+    border-top: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 0 0 16px 16px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.app-pagination-info {
+    color: #9299a3;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.app-pagination-info strong {
+    color: #d5d8dd;
+    font-weight: 600;
+}
+
+.app-pagination-nav {
+    max-width: 100%;
+}
+
+.app-pagination-nav .pagination {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 5px;
+
+    padding: 5px !important;
+    margin: 0 !important;
+
+    list-style: none;
+    background: #25282d !important;
+    border: 1px solid #3a3e44 !important;
+    border-radius: 999px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+}
+
+.app-pagination-nav .pagination > li {
+    display: flex;
+    align-items: center;
+    margin: 0 !important;
+    padding: 0;
+}
+
+.app-pagination-nav .pagination > li > a,
+.app-pagination-nav .pagination > li > span {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 38px;
+    height: 38px;
+    padding: 0 12px !important;
+
+    color: #c2c6cd !important;
+    background: transparent !important;
+    border: 1px solid transparent !important;
+    border-radius: 999px !important;
+
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none !important;
+
+    box-shadow: none !important;
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.app-pagination-nav .pagination > li > a:hover {
+    color: #ffffff !important;
+    background: #383c42 !important;
+    border-color: #454a51 !important;
+}
+
+.app-pagination-nav .pagination > li.active > a,
+.app-pagination-nav .pagination > li.active > span {
+    color: #ffffff !important;
+    background: #41454c !important;
+    border-color: #555b63 !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+
+.app-pagination-nav .pagination > li.disabled > a,
+.app-pagination-nav .pagination > li.disabled > span {
+    color: #656b74 !important;
+    background: transparent !important;
+    cursor: not-allowed;
+}
+
+@media (max-width: 576px) {
+    .app-pagination {
+        justify-content: center;
+        padding: 16px;
+    }
+
+    .app-pagination-info {
+        width: 100%;
+        text-align: center;
+    }
+
+    .app-pagination-nav .pagination {
+        gap: 2px;
+    }
+
+    .app-pagination-nav .pagination > li > a,
+    .app-pagination-nav .pagination > li > span {
+        min-width: 34px;
+        height: 34px;
+        padding: 0 8px !important;
+        font-size: 13px;
+    }
+}

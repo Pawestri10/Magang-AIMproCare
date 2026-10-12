@@ -25,83 +25,95 @@
     <form
         method="get"
         action="<?= site_url('admin/claims') ?>"
-        class="table-toolbar">
+        class="search-filter-panel">
 
-        <div class="form-group">
+        <div class="search-filter-fields">
 
-            <label for="claim-search">
-                Cari Klaim
-            </label>
+            <div class="form-group">
+                <label for="claim-search">Cari Klaim</label>
 
-            <input
-                type="search"
-                id="claim-search"
-                name="search"
-                value="<?= esc($search) ?>"
-                class="form-control"
-                placeholder="Nomor klaim, serial, produk, atau pembeli">
+                <div class="search-input-wrapper">
+                    <svg
+                        class="search-input-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="19"
+                        height="19"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m20 20-4-4" />
+                    </svg>
+
+                    <input
+                        type="search"
+                        id="claim-search"
+                        name="search"
+                        value="<?= esc($search) ?>"
+                        class="form-control search-input"
+                        placeholder="Nomor klaim, serial, produk, atau pembeli">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="claim-status">Status Klaim</label>
+
+                <select
+                    id="claim-status"
+                    name="status"
+                    class="form-control">
+
+                    <option value="">Semua Status</option>
+
+                    <?php foreach ($statuses as $claimStatus): ?>
+                        <option
+                            value="<?= esc($claimStatus) ?>"
+                            <?= $status === $claimStatus ? 'selected' : '' ?>>
+                            <?= esc($claimStatus) ?>
+                        </option>
+                    <?php endforeach; ?>
+
+                </select>
+            </div>
+
+            <div class="search-filter-actions">
+                <button
+                    type="submit"
+                    class="button button-primary search-submit-button">
+
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="17"
+                        height="17"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m20 20-4-4" />
+                    </svg>
+
+                    <span>Cari</span>
+                </button>
+
+                <?php if ($search !== '' || $status !== ''): ?>
+                    <a
+                        href="<?= site_url('admin/claims') ?>"
+                        class="button search-reset-button">
+                        <span>Reset</span>
+                    </a>
+                <?php endif; ?>
+            </div>
 
         </div>
-
-
-        <div class="form-group">
-
-            <label for="claim-status">
-                Status
-            </label>
-
-            <select
-                id="claim-status"
-                name="status"
-                class="form-control">
-
-                <option value="">
-                    Semua Status
-                </option>
-
-                <?php foreach ($statuses as $claimStatus): ?>
-
-                    <option
-                        value="<?= esc($claimStatus) ?>"
-                        <?= $status === $claimStatus ? 'selected' : '' ?>>
-
-                        <?= esc($claimStatus) ?>
-
-                    </option>
-
-                <?php endforeach; ?>
-
-            </select>
-
-        </div>
-
-
-        <div class="table-toolbar-actions">
-
-            <button
-                type="submit"
-                class="button button-primary">
-
-                Cari
-
-            </button>
-
-            <?php if ($search !== '' || $status !== ''): ?>
-
-                <a
-                    href="<?= site_url('admin/claims') ?>"
-                    class="button">
-
-                    Reset
-
-                </a>
-
-            <?php endif; ?>
-
-        </div>
-
     </form>
-
 
     <?php if (empty($claims)): ?>
 
@@ -329,6 +341,5 @@
     <?php endif; ?>
 
 </div>
-
 
 <?= $this->endSection() ?>

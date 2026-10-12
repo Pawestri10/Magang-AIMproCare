@@ -95,6 +95,8 @@ class LoginController extends BaseController
 
     public function logout()
     {
+        $role = session()->get('role');
+
         $activityLogService = new ActivityLogService();
 
         $activityLogService->log(
@@ -104,6 +106,14 @@ class LoginController extends BaseController
 
         session()->destroy();
 
-        return redirect()->to('/');
+        if ($role === 'Administrator') {
+            return redirect()->to(site_url('login-hanyaadmin'));
+        }
+
+        if ($role === 'Petugas QC') {
+            return redirect()->to(site_url('login-hanyaqc'));
+        }
+
+        return redirect()->to(site_url('/'));
     }
 }

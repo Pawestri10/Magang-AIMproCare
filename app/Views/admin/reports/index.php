@@ -14,8 +14,14 @@
         <h2>Filter Laporan</h2>
     </div>
 
-    <form action="<?= site_url('admin/reports') ?>" method="get">
-        <div class="report-filter-grid">
+
+    <form
+        action="<?= site_url('admin/reports') ?>"
+        method="get"
+        class="search-filter-panel report-search-panel">
+
+        <div class="search-filter-fields report-filter-grid">
+
             <div class="form-group">
                 <label for="type">Jenis Laporan</label>
                 <select name="type" id="type" class="form-control">
@@ -23,17 +29,14 @@
                         <?= $filters['type'] === 'qc' ? 'selected' : '' ?>>
                         Rekap Pemeriksaan QC
                     </option>
-
                     <option value="units"
                         <?= $filters['type'] === 'units' ? 'selected' : '' ?>>
                         Unit Siap Dijual dan Terjual
                     </option>
-
                     <option value="warranties"
                         <?= $filters['type'] === 'warranties' ? 'selected' : '' ?>>
                         Garansi
                     </option>
-
                     <option value="claims"
                         <?= $filters['type'] === 'claims' ? 'selected' : '' ?>>
                         Klaim Garansi
@@ -63,12 +66,8 @@
 
             <div class="form-group" id="officer-filter">
                 <label for="officer_id">Petugas QC</label>
-                <select
-                    name="officer_id"
-                    id="officer_id"
-                    class="form-control">
+                <select name="officer_id" id="officer_id" class="form-control">
                     <option value="">Semua Petugas</option>
-
                     <?php foreach ($officers as $officer): ?>
                         <option
                             value="<?= esc($officer['id']) ?>"
@@ -101,10 +100,7 @@
 
             <div class="form-group" id="unit-status-filter">
                 <label for="unit_status">Status Unit</label>
-                <select
-                    name="unit_status"
-                    id="unit_status"
-                    class="form-control">
+                <select name="unit_status" id="unit_status" class="form-control">
                     <option value="">Semua Status</option>
                     <?php foreach (['Siap Dijual', 'Terjual'] as $status): ?>
                         <option
@@ -158,14 +154,33 @@
                     <?php endforeach; ?>
                 </select>
             </div>
+
         </div>
 
-        <div class="report-actions">
-            <button type="submit" class="btn btn-primary">
-                Terapkan Filter
+        <div class="search-filter-actions report-filter-actions">
+            <button
+                type="submit"
+                class="button button-primary search-submit-button">
+
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m20 20-4-4" />
+                </svg>
+
+                <span>Cari</span>
             </button>
 
-            <a href="<?= site_url('admin/reports') ?>" class="btn">
+            <a href="<?= site_url('admin/reports') ?>" class="btn search-reset-button">
                 Reset
             </a>
         </div>
@@ -180,20 +195,25 @@
         </div>
 
         <div class="report-actions">
-            <a
-                href="<?= site_url('admin/reports/export/excel?' . http_build_query($filters)) ?>"
-                class="btn">
-                Export Excel
-            </a>
+            <div class="report-action-card">
+                <a
+                    href="<?= site_url('admin/reports/export/excel?' . http_build_query($filters)) ?>"
+                    class="btn">
+                    Export Excel
+                </a>
+            </div>
 
-            <a
-                href="<?= site_url('admin/reports/export/pdf?' . http_build_query($filters)) ?>"
-                class="btn"
-                target="_blank"
-                rel="noopener">
-                Cetak PDF
-            </a>
+            <div class="report-action-card">
+                <a
+                    href="<?= site_url('admin/reports/export/pdf?' . http_build_query($filters)) ?>"
+                    class="btn"
+                    target="_blank"
+                    rel="noopener">
+                    Cetak PDF
+                </a>
+            </div>
         </div>
+
     </div>
 
     <div class="table-wrapper">

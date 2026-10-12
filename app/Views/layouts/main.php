@@ -34,6 +34,9 @@
     <link rel="stylesheet" href="<?= base_url('assets/css/pages/warranty-card.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/pages/dashboard.css') ?>">
     <link rel="stylesheet" href="<?= base_url('assets/css/pages/reports.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/components/search.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/components/pagination.css') ?>">
+    <link rel="stylesheet" href="<?= base_url('assets/css/pages/notification-settings.css') ?>">
 
     <?= $this->renderSection('styles') ?>
 

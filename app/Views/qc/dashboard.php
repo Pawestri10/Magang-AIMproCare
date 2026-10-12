@@ -18,10 +18,13 @@ $failedInspections = (int) ($inspectionStats['failed_inspections'] ?? 0);
     </div>
 </div>
 
-<!-- Statistik Pemeriksaan QC -->
 <div class="dashboard-grid">
+
     <div class="card dashboard-stat-card">
-        <div class="dashboard-stat-icon">◷</div>
+        <div class="dashboard-stat-top">
+            <div class="dashboard-stat-icon">◷</div>
+            <span class="dashboard-stat-badge">ANTREAN</span>
+        </div>
 
         <div class="dashboard-stat-label">
             Menunggu QC
@@ -37,7 +40,10 @@ $failedInspections = (int) ($inspectionStats['failed_inspections'] ?? 0);
     </div>
 
     <div class="card dashboard-stat-card">
-        <div class="dashboard-stat-icon">↻</div>
+        <div class="dashboard-stat-top">
+            <div class="dashboard-stat-icon">↻</div>
+            <span class="dashboard-stat-badge">ULANG</span>
+        </div>
 
         <div class="dashboard-stat-label">
             Pemeriksaan Ulang
@@ -53,7 +59,10 @@ $failedInspections = (int) ($inspectionStats['failed_inspections'] ?? 0);
     </div>
 
     <div class="card dashboard-stat-card">
-        <div class="dashboard-stat-icon">✓</div>
+        <div class="dashboard-stat-top">
+            <div class="dashboard-stat-icon">✓</div>
+            <span class="dashboard-stat-badge">HARI INI</span>
+        </div>
 
         <div class="dashboard-stat-label">
             Diperiksa Hari Ini
@@ -67,17 +76,21 @@ $failedInspections = (int) ($inspectionStats['failed_inspections'] ?? 0);
             Jumlah pemeriksaan pada hari ini
         </div>
     </div>
+
 </div>
 
-<!-- Ringkasan Hasil QC -->
 <div class="section-header dashboard-section-header">
     <h2>Ringkasan Hasil Pemeriksaan</h2>
     <p>Rekap hasil seluruh pemeriksaan yang tercatat.</p>
 </div>
 
 <div class="dashboard-grid dashboard-grid-two">
+
     <div class="card dashboard-stat-card">
-        <div class="dashboard-stat-icon">✓</div>
+        <div class="dashboard-stat-top">
+            <div class="dashboard-stat-icon">✓</div>
+            <span class="dashboard-stat-badge">LOLOS</span>
+        </div>
 
         <div class="dashboard-stat-label">
             Lolos QC
@@ -93,7 +106,10 @@ $failedInspections = (int) ($inspectionStats['failed_inspections'] ?? 0);
     </div>
 
     <div class="card dashboard-stat-card">
-        <div class="dashboard-stat-icon">!</div>
+        <div class="dashboard-stat-top">
+            <div class="dashboard-stat-icon">!</div>
+            <span class="dashboard-stat-badge">TIDAK LOLOS</span>
+        </div>
 
         <div class="dashboard-stat-label">
             Tidak Lolos QC
@@ -107,9 +123,9 @@ $failedInspections = (int) ($inspectionStats['failed_inspections'] ?? 0);
             Pemeriksaan dengan hasil Tidak Lolos QC
         </div>
     </div>
+
 </div>
 
-<!-- Riwayat Pemeriksaan Terbaru -->
 <div class="section-header dashboard-section-header">
     <h2>Riwayat Pemeriksaan Terbaru</h2>
     <p>Lima pemeriksaan QC terakhir yang tercatat di sistem.</p>

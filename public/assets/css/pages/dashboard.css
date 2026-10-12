@@ -1,190 +1,190 @@
-/* DASHBOARD ADMIN */
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
+    gap: 20px;
     margin-bottom: 28px;
 }
 
-.dashboard-grid-two {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+.dashboard-stat-card {
+    min-width: 0;
+    padding: 24px;
+    background: linear-gradient(145deg, #292c31, #202226);
+    border: 1px solid #3c4047;
+    border-radius: 16px;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.14);
+    transition:
+        border-color 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
 }
 
-.dashboard-stat-card {
-    padding: 22px;
-    min-width: 0;
+.dashboard-stat-card:hover {
+    border-color: #555b63;
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(0, 0, 0, 0.2);
+}
+
+.dashboard-stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 22px;
 }
 
 .dashboard-stat-icon {
-    width: 42px;
-    height: 42px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 14px;
-    background: rgba(46, 139, 87, 0.10);
-    color: #1E5631;
+    width: 46px;
+    height: 46px;
+    color: #d7dbe1;
+    background: #363a40;
+    border: 1px solid #484d55;
+    border-radius: 12px;
     font-size: 23px;
-    margin-bottom: 16px;
+}
+
+.dashboard-stat-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 10px;
+    color: #c5cbd3;
+    background: #30343a;
+    border: 1px solid #464b53;
+    border-radius: 7px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
 }
 
 .dashboard-stat-label {
-    color: #64748b;
-    font-size: 14px;
     margin-bottom: 8px;
+    color: #b3bac4;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
 }
 
 .dashboard-stat-value {
-    color: #1e293b;
-    font-size: clamp(25px, 3vw, 34px);
+    margin-bottom: 10px;
+    color: #f4f5f7;
+    font-size: clamp(28px, 2.4vw, 36px);
     font-weight: 700;
     line-height: 1.2;
     overflow-wrap: anywhere;
 }
 
 .dashboard-stat-description {
-    color: #94a3b8;
+    color: #9299a3;
     font-size: 12px;
-    margin-top: 10px;
-    line-height: 1.5;
+    line-height: 1.7;
 }
 
-.dashboard-section-header {
-    margin-top: 30px;
-    margin-bottom: 16px;
+.dashboard-grid-two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.dashboard-section-header p {
-    color: #64748b;
-    font-size: 13px;
-    margin-top: 5px;
-}
-
-.dashboard-chart-card {
-    padding: 24px;
-    overflow: hidden;
-}
-
-.dashboard-chart {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 12px;
-    min-height: 230px;
-}
-
-.dashboard-chart-column {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    text-align: center;
-}
-
-.dashboard-chart-bar-area {
-    height: 190px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 7px;
-    border-bottom: 1px solid #e2e8f0;
-}
-
-.dashboard-chart-value {
-    color: #475569;
-    font-size: 12px;
-    font-weight: 600;
-}
-
-.dashboard-chart-bar {
-    width: min(48px, 75%);
-    min-height: 0;
-    background: linear-gradient(180deg, #2E8B57, #1E5631);
-    border-radius: 8px 8px 0 0;
-    transition: height 0.3s ease;
-}
-
-.dashboard-chart-label {
-    color: #64748b;
-    font-size: 11px;
-    margin-top: 10px;
-    overflow-wrap: anywhere;
-}
-
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
     .dashboard-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
-@media (max-width: 560px) {
+@media (max-width: 600px) {
     .dashboard-grid,
     .dashboard-grid-two {
-        grid-template-columns: 1fr;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 14px;
     }
 
-    .dashboard-chart-card {
-        padding: 14px;
-    }
-
-    .dashboard-chart {
-        gap: 6px;
-    }
-
-    .dashboard-chart-label {
-        font-size: 10px;
-    }
-
-    .dashboard-chart-bar {
-        width: 70%;
+    .dashboard-stat-card {
+        padding: 20px;
     }
 }
 
-
-/* DASHBOARD QC */
-
-.qc-result-badge {
-    display: inline-block;
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 600;
-    line-height: 1.4;
-    white-space: normal;
+.dashboard-chart-card {
+    padding: 24px;
+    background: linear-gradient(145deg, #292c31, #202226);
+    border: 1px solid #3c4047;
+    border-radius: 16px;
+    overflow: hidden;
 }
 
-.qc-result-passed {
-    color: #166534;
-    background: #dcfce7;
+.dashboard-line-chart-wrapper {
+    width: 100%;
+    overflow-x: auto;
 }
 
-.qc-result-failed {
-    color: #991b1b;
-    background: #fee2e2;
+.dashboard-line-chart {
+    display: block;
+    width: 100%;
+    min-width: 600px;
+    height: auto;
+    overflow: visible;
 }
 
-.qc-result-reinspection {
-    color: #92400e;
-    background: #fef3c7;
+.dashboard-chart-grid-line {
+    stroke: #41454d;
+    stroke-width: 1;
+    stroke-dasharray: 4 5;
 }
 
-.qc-result-default {
-    color: #475569;
-    background: #f1f5f9;
-}
-
-.qc-product-meta {
-    color: #94a3b8;
+.dashboard-chart-axis-value {
+    fill: #9299a3;
     font-size: 12px;
-    margin-top: 4px;
 }
 
-/* Tabel riwayat QC pada layar kecil */
-@media (max-width: 768px) {
-    .card:has(.qc-result-badge) {
-        overflow-x: auto;
+.dashboard-line-chart-path {
+    fill: none;
+    stroke: #aeb6c2;
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.dashboard-line-chart-dot {
+    fill: #e2e6ec;
+    stroke: #292c31;
+    stroke-width: 3;
+    transition: r 0.2s ease, fill 0.2s ease;
+}
+
+.dashboard-line-chart-dot:hover {
+    r: 7;
+    fill: #ffffff;
+}
+
+.dashboard-chart-month-label {
+    fill: #b3bac4;
+    font-size: 12px;
+}
+
+.dashboard-chart-point-value {
+    fill: #f4f5f7;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+@media (max-width: 600px) {
+    .dashboard-chart-card {
+        padding: 16px;
     }
 
-    .card:has(.qc-result-badge) .data-table {
-        min-width: 900px;
+    .dashboard-line-chart {
+        min-width: 600px;
     }
+}
+
+.dashboard-chart-card {
+    margin-bottom: 36px;
+}
+
+.dashboard-chart-card + .dashboard-section-header {
+    margin-top: 0;
+}
+
+.dashboard-section-header {
+    margin-bottom: 18px;
 }

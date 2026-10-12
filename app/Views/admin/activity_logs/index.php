@@ -29,7 +29,7 @@
             </div>
 
             <div class="activity-log-summary-value">
-                <?= count($logs) ?>
+                <?= $totalLogs ?>
             </div>
 
             <div class="activity-log-summary-description">
@@ -66,11 +66,16 @@
 
                         <?php
                         $timestamp = strtotime($log['created_at']);
+                        $number = ($pager->getCurrentPage() - 1) * 10 + $index + 1;
+                        ?>
+
+                        <?php
+                        $timestamp = strtotime($log['created_at']);
                         ?>
 
                         <tr>
                             <td class="activity-log-column-number">
-                                <?= $index + 1 ?>
+                                <?= $number ?>
                             </td>
 
                             <td>
@@ -140,6 +145,13 @@
             </tbody>
         </table>
     </div>
+
+    <?= view('components/pagination', [
+        'pager' => $pager,
+        'total' => $totalLogs,
+        'perPage' => 10,
+    ]) ?>
+
 </div>
 
 <?= $this->endSection() ?>
