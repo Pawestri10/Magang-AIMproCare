@@ -195,7 +195,7 @@ Ganti `NamaSeeder` dengan nama seeder yang benar-benar tersedia di proyek. Atau 
 php spark serve
 ```
 
-Buka alamat lokal yang ditampilkan oleh terminal, biasanya:
+Buka alamat lokal yang ditampilkan oleh terminal, contohnya:
 
 ```text
 http://localhost:8080
