@@ -1,69 +1,245 @@
-# CodeIgniter 4 Application Starter
+# AIMpro Care — Warranty & After-Sales System
 
-## What is CodeIgniter?
+**AIMpro Care** adalah aplikasi berbasis web untuk mengelola proses Quality Control (QC), penjualan unit, aktivasi garansi, pengecekan garansi, dan pengajuan klaim garansi dalam satu sistem terintegrasi.
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+Proyek ini dikembangkan untuk mendukung proses operasional **CV. Amis Project Teknologi Indonesia**, mulai dari pemeriksaan unit hingga layanan purna jual kepada pelanggan.
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## 🎯 Tujuan Proyek
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
+- Mengelola proses QC dan dokumentasi pemeriksaan unit.
+- Memastikan hanya unit yang memenuhi kriteria QC yang dapat dijual.
+- Mengelola data pelanggan, transaksi penjualan, dan aktivasi garansi.
+- Menyediakan kartu garansi digital dengan QR Code.
+- Memungkinkan pelanggan memeriksa garansi dan mengajukan klaim secara online.
+- Menyediakan riwayat proses klaim agar status penanganan dapat ditelusuri.
+- Mendukung pengelolaan layanan purna jual secara terstruktur.
 
-You can read the [user guide](https://codeigniter.com/user_guide/)
-corresponding to the latest version of the framework.
+## 🛠️ Teknologi
 
-## Installation & updates
+| Teknologi                 | Penggunaan                                                   |
+| ------------------------- | ------------------------------------------------------------ |
+| PHP 8                     | Bahasa pemrograman backend                                   |
+| CodeIgniter 4             | Framework aplikasi web                                       |
+| MySQL / MariaDB           | Database                                                     |
+| HTML, CSS, JavaScript     | Antarmuka dan interaksi                                      |
+| Bootstrap 5               | Dasar pengembangan antarmuka responsif                       |
+| Git & GitHub              | Version control dan pengelolaan kode                         |
+| Progressive Web App (PWA) | Dukungan pengalaman aplikasi web                             |
+| WAKITA                    | Integrasi notifikasi WhatsApp yang direncanakan dalam sistem |
 
-`composer create-project codeigniter4/appstarter` then `composer update` whenever
-there is a new release of the framework.
+## 👥 Role Pengguna
 
-When updating, check the release notes to see if there are any changes you might need to apply
-to your `app` folder. The affected files can be copied or merged from
-`vendor/codeigniter4/framework/app`.
+### 1. Administrator
 
-## Setup
+Administrator mengelola data dan proses operasional utama, meliputi:
 
-Copy `env` to `.env` and tailor for your app, specifically the baseURL
-and any database settings.
+- Manajemen pengguna, produk, dan pelanggan.
+- Pengelolaan unit yang telah lulus QC.
+- Pencatatan transaksi penjualan.
+- Aktivasi garansi dan penerbitan kartu garansi digital.
+- Pengelolaan klaim garansi.
+- Pemantauan dashboard, laporan, dan aktivitas sistem.
 
-## Important Change with index.php
+### 2. Petugas QC
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
+Petugas QC bertanggung jawab untuk:
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
+- Memeriksa kondisi fisik unit.
+- Memeriksa kelengkapan produk.
+- Mengisi checklist pemeriksaan.
+- Mengunggah dokumentasi foto dan video.
+- Mencatat hasil pemeriksaan dan catatan QC.
 
-**Please** read the user guide for a better explanation of how CI4 works!
+Petugas QC tidak bertanggung jawab untuk mengelola pelanggan atau mengaktifkan garansi.
 
-## Repository Management
+### 3. Pelanggan
 
-We use GitHub issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
+Pelanggan dapat mengakses layanan publik tanpa harus masuk ke dashboard internal, termasuk:
 
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
+- Memeriksa status garansi menggunakan identitas unit atau garansi.
+- Melihat kartu garansi digital.
+- Mengajukan klaim garansi.
+- Melacak status dan riwayat klaim menggunakan tautan pelacakan.
 
-## Server Requirements
+## ✨ Fitur Sistem
 
-PHP version 8.2 or higher is required, with the following extensions installed:
+### Quality Control (QC)
 
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
+- Pencatatan hasil pemeriksaan unit.
+- Checklist kondisi fisik dan kelengkapan.
+- Dokumentasi foto dan video.
+- Riwayat pemeriksaan unit.
+- Pengendalian status unit berdasarkan hasil QC.
 
-> [!WARNING]
-> - The end of life date for PHP 7.4 was November 28, 2022.
-> - The end of life date for PHP 8.0 was November 26, 2023.
-> - The end of life date for PHP 8.1 was December 31, 2025.
-> - If you are still using below PHP 8.2, you should upgrade immediately.
-> - The end of life date for PHP 8.2 will be December 31, 2026.
+### Penjualan dan Garansi
 
-Additionally, make sure that the following extensions are enabled in your PHP:
+- Pencatatan data pelanggan dan transaksi.
+- Pemilihan unit yang memenuhi persyaratan penjualan.
+- Aktivasi garansi berdasarkan transaksi.
+- Nomor garansi dan periode garansi.
+- QR Code dan kartu garansi digital.
+- Pemeriksaan garansi melalui halaman publik.
 
-- json (enabled by default - don't turn it off)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php) if you plan to use MySQL
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
+### Klaim Garansi
+
+- Pengajuan klaim oleh pelanggan.
+- Nomor klaim dan token pelacakan.
+- Unggahan foto kerusakan dan video opsional.
+- Pencatatan metode pengiriman serta alamat jika diperlukan.
+- Riwayat status klaim.
+- Daftar klaim pada dashboard Administrator.
+- Detail klaim dan timeline penanganan.
+
+Status klaim yang digunakan:
+
+1. Pengajuan Baru
+2. Sedang Diverifikasi
+3. Klaim Diterima
+4. Klaim Ditolak
+5. Barang Diterima
+6. Sedang Diperiksa
+7. Sedang Diproses
+8. Selesai
+
+### Dashboard, Laporan, dan Notifikasi
+
+Pengembangan sistem juga mencakup dashboard operasional, laporan QC dan garansi, ekspor laporan, notifikasi WhatsApp melalui WAKITA, serta dukungan PWA. Ketersediaan setiap fitur bergantung pada tahap implementasi dan pengujian terakhir.
+
+## 🏗️ Struktur Aplikasi
+
+Aplikasi menggunakan pola MVC dari CodeIgniter 4:
+
+- **Models** — akses data dan interaksi dengan database.
+- **Views** — tampilan halaman dan komponen antarmuka.
+- **Controllers** — menangani request dan alur proses aplikasi.
+- **Filters** — pembatasan akses berdasarkan autentikasi dan role.
+- **Migrations** — pengelolaan perubahan struktur database.
+- **Services** — logika atau layanan yang digunakan lintas bagian aplikasi.
+- **Public Assets** — file CSS, JavaScript, gambar, dan aset publik lainnya.
+
+Struktur ini membantu menjaga pemisahan tanggung jawab dan mempermudah pengembangan serta pemeliharaan aplikasi.
+
+## ⚙️ Persyaratan Sistem
+
+Sebelum menjalankan aplikasi, siapkan:
+
+- PHP 8 yang kompatibel dengan versi CodeIgniter 4 proyek.
+- Composer.
+- MySQL atau MariaDB.
+- Web server lokal seperti Laragon.
+- Git.
+
+Ekstensi PHP yang diperlukan mengikuti persyaratan CodeIgniter 4 dan dependensi yang digunakan proyek.
+
+## 🚀 Instalasi dan Menjalankan Aplikasi
+
+### 1. Clone Repository
+
+```bash
+git clone <URL_REPOSITORY>
+cd Magang-AIMproCare
+```
+
+### 2. Instal Dependensi
+
+```bash
+composer install
+```
+
+### 3. Konfigurasi Environment
+
+Salin file konfigurasi environment contoh jika tersedia:
+
+```bash
+cp env .env
+```
+
+Pada Windows, file tersebut juga dapat disalin melalui File Explorer.
+
+Sesuaikan konfigurasi environment, termasuk pengaturan aplikasi dan koneksi database, berdasarkan lingkungan lokal.
+
+### 4. Buat Database
+
+Buat database MySQL/MariaDB untuk AIMpro Care, kemudian atur nama database, username, dan password di `.env`.
+
+Contoh konfigurasi:
+
+```ini
+database.default.hostname = localhost
+database.default.database = nama_database
+database.default.username = root
+database.default.password =
+database.default.DBDriver = MySQLi
+database.default.port = 3306
+```
+
+Sesuaikan nilai tersebut dengan konfigurasi lokal. Jangan menggunakan contoh ini sebagai kredensial produksi.
+
+### 5. Jalankan Migration
+
+```bash
+php spark migrate
+```
+
+Jalankan seeder hanya jika proyek menyediakan seeder dan data awal memang diperlukan:
+
+```bash
+php spark db:seed NamaSeeder
+```
+
+Ganti `NamaSeeder` dengan nama seeder yang benar-benar tersedia di proyek.
+
+### 6. Jalankan Aplikasi
+
+```bash
+php spark serve
+```
+
+Buka alamat lokal yang ditampilkan oleh terminal, biasanya:
+
+```text
+http://localhost:8080
+```
+
+Jika menggunakan Laragon, sesuaikan alamat dengan konfigurasi virtual host lokal.
+
+## 🔐 Keamanan
+
+Pengembangan AIMpro Care memperhatikan aspek keamanan berikut:
+
+- Validasi input di sisi server.
+- Proteksi CSRF pada form yang sesuai.
+- Pembatasan akses berdasarkan autentikasi dan role.
+- Penggunaan query builder atau mekanisme query yang aman.
+- Validasi tipe dan ukuran file unggahan.
+- Pembatasan informasi sensitif pada halaman publik.
+- Penggunaan token pelacakan untuk akses pelacakan klaim.
+- Pencatatan aktivitas dan riwayat perubahan status.
+- Penyimpanan kredensial dan konfigurasi sensitif di environment, bukan di repository.
+
+Konfigurasi produksi dan seluruh alur akses tetap harus diuji sebelum aplikasi digunakan dengan data nyata.
+
+## 🧪 Pengujian
+
+Pengujian proyek perlu mencakup:
+
+- Login, logout, dan pembatasan role.
+- Validasi proses QC dan status unit.
+- Penjualan dan aktivasi garansi.
+- Keunikan serial unit dan relasi transaksi-garansi.
+- Pengecekan garansi melalui halaman publik.
+- Pengajuan klaim dan validasi unggahan.
+- Pelacakan klaim dan kelengkapan timeline.
+- Otorisasi pengelolaan klaim oleh Administrator.
+- Proteksi akses langsung ke data klaim milik pihak lain.
+- Pengujian notifikasi, laporan, dan PWA sesuai fitur yang sudah diimplementasikan.
+
+Hasil pengujian aktual perlu dicatat berdasarkan eksekusi pengujian, bukan hanya berdasarkan keberadaan kode.
+
+## 📌 Status Pengembangan
+
+AIMpro Care dikembangkan secara bertahap.
+
+Area yang telah dikerjakan mencakup proses pengajuan dan pelacakan klaim publik serta daftar klaim pada dashboard Administrator. Detail klaim dalam modal, perubahan status, pencatatan aktivitas, integrasi notifikasi, dan penyelesaian fitur Week 4 harus dinyatakan selesai setelah implementasi dan pengujiannya benar-benar lulus.
+
+**AIMpro Care — Warranty & After-Sales System**
