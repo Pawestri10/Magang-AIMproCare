@@ -187,7 +187,7 @@ Jalankan seeder hanya jika proyek menyediakan seeder dan data awal memang diperl
 php spark db:seed NamaSeeder
 ```
 
-Ganti `NamaSeeder` dengan nama seeder yang benar-benar tersedia di proyek.
+Ganti `NamaSeeder` dengan nama seeder yang benar-benar tersedia di proyek. Atau impoprt sql database
 
 ### 6. Jalankan Aplikasi
 
