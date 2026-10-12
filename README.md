@@ -2,7 +2,7 @@
 
 **AIMpro Care** adalah aplikasi berbasis web untuk mengelola proses Quality Control (QC), penjualan unit, aktivasi garansi, pengecekan garansi, dan pengajuan klaim garansi dalam satu sistem terintegrasi.
 
-Proyek ini dikembangkan untuk mendukung proses operasional **CV. Amis Project Teknologi Indonesia**, mulai dari pemeriksaan unit hingga layanan purna jual kepada pelanggan.
+Proyek ini dikembangkan untuk mendukung proses operasional **CV. Amins Project Teknologi Indonesia**, mulai dari pemeriksaan unit hingga layanan purna jual kepada pelanggan.
 
 ## 🎯 Tujuan Proyek
 
