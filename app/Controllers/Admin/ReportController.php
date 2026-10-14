@@ -17,18 +17,26 @@ class ReportController extends BaseController
         'claims',
     ];
 
+    private int $reportTotalRows = 0;
+
     public function index()
     {
         $filters = $this->getFilters();
         $type = $filters['type'];
 
-        $data = [
+        $rows = $this->getReportRows($type, $filters, true);
+        $pager = service('pager');
+
+        return view('admin/reports/index', [
             'title' => 'Laporan AIMpro Care',
             'filters' => $filters,
             'reportTypes' => $this->reportTypes,
             'reportTitle' => $this->getReportTitle($type),
             'columns' => $this->getColumns($type),
-            'rows' => $this->getReportRows($type, $filters),
+            'rows' => $rows,
+            'pager' => $pager,
+            'totalRows' => $this->reportTotalRows,
+            'perPage' => 10,
             'officers' => db_connect()
                 ->table('users')
                 ->select('id, name')
@@ -37,9 +45,7 @@ class ReportController extends BaseController
                 ->orderBy('name', 'ASC')
                 ->get()
                 ->getResultArray(),
-        ];
-
-        return view('admin/reports/index', $data);
+        ]);
     }
 
     public function exportExcel()
@@ -203,6 +209,7 @@ class ReportController extends BaseController
 
         return [
             'type' => $type,
+            'search' => trim((string) $request->getGet('search')),
             'start_date' => $startDate,
             'end_date' => $endDate,
             'officer_id' => trim(
@@ -231,15 +238,52 @@ class ReportController extends BaseController
             && $parsed->format('Y-m-d') === $date;
     }
 
-    private function getReportRows(string $type, array $filters): array
-    {
+    private function getReportRows(
+        string $type,
+        array $filters,
+        bool $paginate = false
+    ): array {
         return match ($type) {
-            'qc' => $this->getQcRows($filters),
-            'units' => $this->getUnitRows($filters),
-            'warranties' => $this->getWarrantyRows($filters),
-            'claims' => $this->getClaimRows($filters),
+            'qc' => $this->getQcRows($filters, $paginate),
+            'units' => $this->getUnitRows($filters, $paginate),
+            'warranties' => $this->getWarrantyRows($filters, $paginate),
+            'claims' => $this->getClaimRows($filters, $paginate),
             default => [],
         };
+    }
+
+    private function finishReportQuery($builder, bool $paginate): array
+    {
+        if (! $paginate) {
+            return $builder->get()->getResultArray();
+        }
+
+        $perPage = 10;
+        $page = max(1, (int) $this->request->getGet('page'));
+
+        $this->reportTotalRows = $builder->countAllResults(false);
+
+        if ($this->reportTotalRows === 0) {
+            return [];
+        }
+
+        $totalPages = (int) ceil($this->reportTotalRows / $perPage);
+        $page = min($page, $totalPages);
+
+        $pager = service('pager');
+
+        $pager->makeLinks(
+            $page,
+            $perPage,
+            $this->reportTotalRows,
+            'default_full',
+            0,
+            'default'
+        );
+
+        return $builder
+            ->get($perPage, ($page - 1) * $perPage)
+            ->getResultArray();
     }
 
     private function applyDateFilter(
@@ -264,7 +308,33 @@ class ReportController extends BaseController
         return $builder;
     }
 
-    private function getQcRows(array $filters): array
+    private function applySearchFilter(
+        $builder,
+        string $search,
+        array $columns
+    ) {
+        $search = trim($search);
+
+        if ($search === '') {
+            return $builder;
+        }
+
+        $builder->groupStart();
+
+        foreach ($columns as $index => $column) {
+            if ($index === 0) {
+                $builder->like($column, $search);
+            } else {
+                $builder->orLike($column, $search);
+            }
+        }
+
+        $builder->groupEnd();
+
+        return $builder;
+    }
+
+    private function getQcRows(array $filters, bool $paginate = false): array
     {
         $builder = db_connect()->table('qc_inspections qi')
             ->select("
@@ -291,6 +361,17 @@ class ReportController extends BaseController
             'qi.inspection_date'
         );
 
+
+        $this->applySearchFilter(
+            $builder,
+            $filters['search'],
+            [
+                'pu.serial_number',
+                'p.name',
+                'p.brand',
+            ]
+        );
+
         if ($filters['officer_id'] !== '') {
             $builder->where('qi.user_id', (int) $filters['officer_id']);
         }
@@ -305,14 +386,15 @@ class ReportController extends BaseController
             $builder->where('qi.result', $filters['result']);
         }
 
-        return $builder
-            ->orderBy('qi.inspection_date', 'DESC')
-            ->orderBy('qi.id', 'DESC')
-            ->get()
-            ->getResultArray();
+        return $this->finishReportQuery(
+            $builder
+                ->orderBy('qi.inspection_date', 'DESC')
+                ->orderBy('qi.id', 'DESC'),
+            $paginate
+        );
     }
 
-    private function getUnitRows(array $filters): array
+    private function getUnitRows(array $filters, bool $paginate = false): array
     {
         $builder = db_connect()->table('product_units pu')
             ->select("
@@ -341,13 +423,24 @@ class ReportController extends BaseController
             'pu.created_at'
         );
 
-        return $builder
-            ->orderBy('pu.id', 'DESC')
-            ->get()
-            ->getResultArray();
+
+        $this->applySearchFilter(
+            $builder,
+            $filters['search'],
+            [
+                'pu.serial_number',
+                'p.name',
+                'p.brand',
+            ]
+        );
+
+        return $this->finishReportQuery(
+            $builder->orderBy('pu.id', 'DESC'),
+            $paginate
+        );
     }
 
-    private function getWarrantyRows(array $filters): array
+    private function getWarrantyRows(array $filters, bool $paginate = false): array
     {
         $builder = db_connect()->table('warranties w')
             ->select("
@@ -373,6 +466,16 @@ class ReportController extends BaseController
             'w.start_date'
         );
 
+        $this->applySearchFilter(
+            $builder,
+            $filters['search'],
+            [
+                'pu.serial_number',
+                'p.name',
+                'p.brand',
+            ]
+        );
+
         if ($filters['warranty_status'] === 'aktif') {
             $builder->where('w.start_date <=', date('Y-m-d'))
                 ->where('w.end_date >=', date('Y-m-d'));
@@ -380,13 +483,13 @@ class ReportController extends BaseController
             $builder->where('w.end_date <', date('Y-m-d'));
         }
 
-        return $builder
-            ->orderBy('w.end_date', 'ASC')
-            ->get()
-            ->getResultArray();
+        return $this->finishReportQuery(
+            $builder->orderBy('w.end_date', 'ASC'),
+            $paginate
+        );
     }
 
-    private function getClaimRows(array $filters): array
+    private function getClaimRows(array $filters, bool $paginate = false): array
     {
         $builder = db_connect()->table('warranty_claims wc')
             ->select("
@@ -413,6 +516,17 @@ class ReportController extends BaseController
             'wc.created_at'
         );
 
+
+        $this->applySearchFilter(
+            $builder,
+            $filters['search'],
+            [
+                'pu.serial_number',
+                'p.name',
+                'p.brand',
+            ]
+        );
+
         $allowedStatuses = [
             'Pengajuan Baru',
             'Sedang Diverifikasi',
@@ -428,10 +542,12 @@ class ReportController extends BaseController
             $builder->where('wc.status', $filters['claim_status']);
         }
 
-        return $builder
-            ->orderBy('wc.created_at', 'DESC')
-            ->get()
-            ->getResultArray();
+        return $this->finishReportQuery(
+            $builder
+                ->orderBy('wc.created_at', 'DESC')
+                ->orderBy('wc.id', 'DESC'),
+            $paginate
+        );
     }
 
     private function getReportTitle(string $type): string

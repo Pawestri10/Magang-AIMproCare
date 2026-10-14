@@ -34,7 +34,7 @@
     </div>
 <?php endif; ?>
 
-<div class="card">
+<div class="activity-log-card product-result-card">
     <div class="table-toolbar">
 
         <button
@@ -102,7 +102,7 @@
                         <tr>
 
                             <td>
-                                <?= $index + 1 ?>
+                                <?= (($pager->getCurrentPage('default') - 1) * $perPage) + $index + 1 ?>
                             </td>
 
                             <td>
@@ -214,6 +214,12 @@
             ]) ?>
 
         <?php endforeach; ?>
+
+        <?= view('components/pagination', [
+            'pager' => $pager,
+            'total' => $totalProducts,
+            'perPage' => $perPage,
+        ]) ?>
 
     <?php endif; ?>
 
