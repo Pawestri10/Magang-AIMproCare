@@ -19,10 +19,17 @@ class ProductController extends BaseController
 
     public function index()
     {
+        $products = $this->productModel
+            ->orderBy('id', 'DESC')
+            ->paginate(10, 'default');
+
+        $pager = $this->productModel->pager;
+
         $data = [
-            'products' => $this->productModel
-                ->orderBy('id', 'DESC')
-                ->findAll(),
+            'products' => $products,
+            'pager' => $pager,
+            'totalProducts' => $pager->getTotal('default'),
+            'perPage' => 10,
         ];
 
         return view('admin/products/index', $data);

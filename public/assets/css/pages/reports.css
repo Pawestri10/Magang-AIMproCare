@@ -43,3 +43,120 @@
         flex-direction: column;
     }
 }
+
+.report-search-panel .search-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.report-search-panel .search-input-wrapper .search-input-icon {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 19px;
+    height: 19px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.report-search-panel .search-input-wrapper input.search-input {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding-left: 44px;
+}
+
+
+.report-result-card {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    padding: 0;
+    margin-bottom: 24px;
+}
+
+.report-result-card > .report-result-header {
+    padding: 24px 28px;
+    margin: 0;
+}
+
+.report-result-card > .table-wrapper {
+    width: 100%;
+    margin: 0;
+}
+
+.report-result-card > .app-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 20px 28px;
+    margin: 0;
+    border-top: 1px solid var(--border-color, #34373b);
+}
+
+.report-result-card .app-pagination-info {
+    margin: 0;
+}
+
+.report-result-card .app-pagination-nav {
+    margin-left: auto;
+}
+
+@media (max-width: 600px) {
+    .report-result-card > .report-result-header {
+        padding: 18px 16px;
+    }
+
+    .report-result-card > .app-pagination {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 16px;
+    }
+
+    .report-result-card .app-pagination-nav {
+        margin-left: 0;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+}
+
+.activity-log-card.report-result-card > .app-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 20px 24px;
+    margin: 0;
+    border-top: 1px solid var(--glass-border-subtle);
+}
+
+.activity-log-card.report-result-card > .app-pagination .app-pagination-info {
+    margin: 0;
+}
+
+.activity-log-card.report-result-card > .app-pagination .app-pagination-nav {
+    margin-left: auto;
+}
+
+@media (max-width: 600px) {
+    .activity-log-card.report-result-card > .app-pagination {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 16px;
+    }
+
+    .activity-log-card.report-result-card > .app-pagination .app-pagination-nav {
+        margin-left: 0;
+        max-width: 100%;
+        overflow-x: auto;
+    }
+}

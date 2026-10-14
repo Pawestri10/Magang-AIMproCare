@@ -10,17 +10,42 @@
 </div>
 
 <div class="card">
-    <div class="section-header">
-        <h2>Filter Laporan</h2>
-    </div>
-
-
     <form
         action="<?= site_url('admin/reports') ?>"
         method="get"
         class="search-filter-panel report-search-panel">
 
         <div class="search-filter-fields report-filter-grid">
+
+            <div class="form-group">
+                <label for="report-search">Cari Data</label>
+
+                <div class="search-input-wrapper">
+                    <svg
+                        class="search-input-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="19"
+                        height="19"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m20 20-4-4" />
+                    </svg>
+
+                    <input
+                        type="search"
+                        id="report-search"
+                        name="search"
+                        value="<?= esc($filters['search'] ?? '') ?>"
+                        class="form-control search-input"
+                        placeholder="Cari berdasarkan data laporan">
+                </div>
+            </div>
 
             <div class="form-group">
                 <label for="type">Jenis Laporan</label>
@@ -187,11 +212,10 @@
     </form>
 </div>
 
-<div class="card">
+<div class="activity-log-card report-result-card">
     <div class="section-header report-result-header">
         <div>
             <h2><?= esc($reportTitle) ?></h2>
-            <p><?= count($rows) ?> data ditemukan</p>
         </div>
 
         <div class="report-actions">
@@ -216,7 +240,7 @@
 
     </div>
 
-    <div class="table-wrapper">
+    <div class="activity-log-table-wrapper">
         <table class="data-table">
             <thead>
                 <tr>
@@ -236,7 +260,7 @@
                         </td>
                     </tr>
                 <?php else: ?>
-                    <?php foreach ($rows as $row): ?>
+                    <?php foreach ($rows as $index => $row): ?>
                         <tr>
                             <?php foreach ($columns as $column): ?>
                                 <td>
@@ -249,6 +273,13 @@
             </tbody>
         </table>
     </div>
+
+    <?= view('components/pagination', [
+        'pager' => $pager,
+        'total' => $totalRows,
+        'perPage' => $perPage,
+    ]) ?>
+
 </div>
 
 <script>
