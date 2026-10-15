@@ -49,6 +49,10 @@ class ClaimController extends BaseController
             10
         );
 
+        $pager = $this->warrantyClaimModel->pager;
+        $pager->setPath(site_url('admin/claims'));
+        $pager->only(['search', 'status']);
+
         $claimIds = array_map(
             static fn(array $claim): int => (int) $claim['id'],
             $claims
@@ -65,7 +69,9 @@ class ClaimController extends BaseController
             'claims' => $claims,
             'claimDetails' => $claimDetails,
             'claimHistories' => $claimHistories,
-            'pager' => $this->warrantyClaimModel->pager,
+            'pager' => $pager,
+            'perPage' => 10,
+            'totalClaims' => $pager->getTotal('default'),
             'search' => $search,
             'status' => $status,
             'statuses' => $allowedStatuses,

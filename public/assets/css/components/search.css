@@ -281,3 +281,100 @@
 @media (max-width: 600px) { .report-action-card { min-width: 130px; min-height: 50px; } .report-actions, .report-filter-actions { gap: var(--space-2); } }
 
 @media (prefers-reduced-motion: reduce) { .report-action-card { transition: none; } .report-action-card:hover { transform: none; } }
+
+.customer-search-panel {
+    margin-bottom: var(--space-6);
+}
+
+.customer-search-panel .search-filter-fields {
+    grid-template-columns: minmax(0, 1.6fr) minmax(180px, 1fr);
+}
+
+.customer-search-panel .search-filter-actions {
+    justify-content: flex-start;
+    margin-top: var(--space-4);
+}
+
+@media (max-width: 900px) {
+    .customer-search-panel .search-filter-fields {
+        grid-template-columns: minmax(0, 1fr) minmax(160px, 0.8fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .customer-search-panel .search-filter-fields {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .customer-search-panel .search-filter-actions {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .customer-search-panel .search-filter-actions > * {
+        flex: 1;
+    }
+}
+
+.customer-search-panel .search-input-wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.customer-search-panel .search-input-icon {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    width: 19px;
+    height: 19px;
+    max-width: 19px;
+    max-height: 19px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.customer-search-panel .search-input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 14px 10px 42px;
+}
+
+.customer-search-panel {
+    margin-bottom: 24px;
+}
+
+.customer-search-panel .search-filter-panel {
+    margin: 0;
+}
+
+.customer-search-panel .search-filter-fields {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(220px, 1fr);
+    align-items: end;
+    gap: 16px;
+}
+
+.customer-search-panel .search-filter-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+.customer-search-panel .search-filter-actions > * {
+    flex: 0 0 auto;
+}
+
+@media (max-width: 600px) {
+    .customer-search-panel .search-filter-fields {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .customer-search-panel .search-filter-actions > * {
+        flex: 1;
+    }
+}

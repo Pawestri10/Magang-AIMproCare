@@ -35,147 +35,235 @@
 
 <?php endif; ?>
 
-<div class="card">
 
-    <div class="table-toolbar">
+<div class="card customer-search-panel">
 
-        <button
-            type="button"
-            class="button button-primary"
-            data-modal-open="customer-create-modal">
+    <form
+        action="<?= site_url('admin/customers') ?>"
+        method="get"
+        class="search-filter-panel">
 
-            + Tambah Pembeli
+        <div class="search-filter-fields">
 
-        </button>
+            <div class="form-group">
 
-    </div>
+                <label for="customer-search">
+                    Cari Pembeli
+                </label>
 
-    <?php if (empty($customers)): ?>
+                <div class="search-input-wrapper">
 
-        <div class="empty-state">
+                    <svg
+                        class="search-input-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
 
-            <p>
-                Belum ada data pembeli.
-            </p>
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+
+                    </svg>
+
+                    <input
+                        type="search"
+                        id="customer-search"
+                        name="search"
+                        value="<?= esc($search ?? '') ?>"
+                        class="form-control search-input"
+                        placeholder="Cari nama, WhatsApp, email, atau alamat">
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <label for="customer-filter">
+                    Filter Berdasarkan
+                </label>
+
+                <select
+                    id="customer-filter"
+                    name="filter"
+                    class="form-control">
+
+                    <option
+                        value="all"
+                        <?= ($filter ?? 'all') === 'all' ? 'selected' : '' ?>>
+                        Semua Data
+                    </option>
+
+                    <option
+                        value="name"
+                        <?= ($filter ?? 'all') === 'name' ? 'selected' : '' ?>>
+                        Nama Pembeli
+                    </option>
+
+                    <option
+                        value="whatsapp"
+                        <?= ($filter ?? 'all') === 'whatsapp' ? 'selected' : '' ?>>
+                        WhatsApp
+                    </option>
+
+                    <option
+                        value="email"
+                        <?= ($filter ?? 'all') === 'email' ? 'selected' : '' ?>>
+                        Email
+                    </option>
+
+                    <option
+                        value="address"
+                        <?= ($filter ?? 'all') === 'address' ? 'selected' : '' ?>>
+                        Alamat
+                    </option>
+
+                </select>
+
+            </div>
 
         </div>
 
-    <?php else: ?>
+        <div class="search-filter-actions">
 
-        <div class="table-wrapper">
+            <button
+                type="submit"
+                class="button button-primary search-submit-button">
 
-            <table class="data-table">
+                <span>Cari</span>
 
-                <thead>
+            </button>
 
-                    <tr>
+            <a
+                href="<?= site_url('admin/customers') ?>"
+                class="btn search-reset-button">
 
-                        <th>
-                            No.
-                        </th>
+                Reset
 
-                        <th>
-                            Nama Pembeli
-                        </th>
+            </a>
 
-                        <th>
-                            WhatsApp
-                        </th>
+        </div>
 
-                        <th>
-                            Email
-                        </th>
+    </form>
 
-                        <th>
-                            Alamat
-                        </th>
+</div>
 
-                        <th>
-                            Dibuat
-                        </th>
+<div class="table-toolbar">
 
-                        <th>
-                            Aksi
-                        </th>
+    <button
+        type="button"
+        class="button button-primary"
+        data-modal-open="customer-create-modal">
 
-                    </tr>
+        + Tambah Pembeli
 
-                </thead>
+    </button>
 
-                <tbody>
+</div>
 
-                    <?php foreach ($customers as $index => $customer): ?>
+<div class="card">
+
+    <div class="activity-log-card product-result-card">
+
+        <?php if (empty($customers)): ?>
+
+            <div class="empty-state">
+
+                <p>
+                    <?= ($search ?? '') !== ''
+                        ? 'Pembeli tidak ditemukan untuk pencarian "' . esc($search) . '".'
+                        : 'Belum ada data pembeli.' ?>
+                </p>
+
+            </div>
+
+        <?php else: ?>
+
+            <div class="table-wrapper">
+
+                <table class="data-table">
+
+                    <thead>
 
                         <tr>
 
-                            <td>
-                                <?= $index + 1 ?>
-                            </td>
+                            <th>
+                                No.
+                            </th>
 
-                            <td>
-                                <?= esc($customer['name']) ?>
-                            </td>
+                            <th>
+                                Nama Pembeli
+                            </th>
 
-                            <td>
-                                <?= esc($customer['whatsapp']) ?>
-                            </td>
+                            <th>
+                                WhatsApp
+                            </th>
 
-                            <td>
-                                <?= $customer['email']
-                                    ? esc($customer['email'])
-                                    : '-' ?>
-                            </td>
+                            <th>
+                                Email
+                            </th>
 
-                            <td>
-                                <?= esc($customer['address']) ?>
-                            </td>
+                            <th>
+                                Alamat
+                            </th>
 
-                            <td>
-                                <?= esc($customer['created_at']) ?>
-                            </td>
+                            <th>
+                                Dibuat
+                            </th>
 
-                            <td>
+                            <th>
+                                Aksi
+                            </th>
 
-                                <div class="table-actions">
+                        </tr>
 
-                                    <button
-                                        type="button"
-                                        class="button button-icon button-icon-edit"
-                                        aria-label="Edit pembeli"
-                                        data-tooltip="Edit"
-                                        data-modal-open="customer-edit-modal-<?= esc($customer['id']) ?>">
+                    </thead>
 
-                                        <svg
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="1.8"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            aria-hidden="true">
+                    <tbody>
 
-                                            <path d="M12 20h9"></path>
+                        <?php foreach ($customers as $index => $customer): ?>
 
-                                            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+                            <tr>
 
-                                        </svg>
+                                <td>
+                                    <?= (($pager->getCurrentPage('default') - 1) * $perPage) + $index + 1 ?>
+                                </td>
 
-                                    </button>
+                                <td>
+                                    <?= esc($customer['name']) ?>
+                                </td>
 
-                                    <form
-                                        id="customer-delete-form-<?= esc($customer['id']) ?>"
-                                        method="post"
-                                        action="<?= site_url('admin/customers/' . $customer['id'] . '/delete') ?>"
-                                        class="table-action-form">
+                                <td>
+                                    <?= esc($customer['whatsapp']) ?>
+                                </td>
 
-                                        <?= csrf_field() ?>
+                                <td>
+                                    <?= $customer['email']
+                                        ? esc($customer['email'])
+                                        : '-' ?>
+                                </td>
+
+                                <td>
+                                    <?= esc($customer['address']) ?>
+                                </td>
+
+                                <td>
+                                    <?= esc($customer['created_at']) ?>
+                                </td>
+
+                                <td>
+
+                                    <div class="table-actions">
 
                                         <button
                                             type="button"
-                                            class="button button-icon button-icon-danger"
-                                            aria-label="Hapus pembeli"
-                                            data-tooltip="Hapus"
-                                            data-delete-modal-open="customer-delete-modal-<?= esc($customer['id']) ?>">
+                                            class="button button-icon button-icon-edit"
+                                            aria-label="Edit pembeli"
+                                            data-tooltip="Edit"
+                                            data-modal-open="customer-edit-modal-<?= esc($customer['id']) ?>">
 
                                             <svg
                                                 viewBox="0 0 24 24"
@@ -186,49 +274,89 @@
                                                 stroke-linejoin="round"
                                                 aria-hidden="true">
 
-                                                <path d="M3 6h18"></path>
+                                                <path d="M12 20h9"></path>
 
-                                                <path d="M8 6V4h8v2"></path>
-
-                                                <path d="M19 6l-1 14H6L5 6"></path>
-
-                                                <path d="M10 11v5"></path>
-
-                                                <path d="M14 11v5"></path>
+                                                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
 
                                             </svg>
 
                                         </button>
 
-                                    </form>
+                                        <form
+                                            id="customer-delete-form-<?= esc($customer['id']) ?>"
+                                            method="post"
+                                            action="<?= site_url('admin/customers/' . $customer['id'] . '/delete') ?>"
+                                            class="table-action-form">
 
-                                </div>
+                                            <?= csrf_field() ?>
 
-                            </td>
+                                            <button
+                                                type="button"
+                                                class="button button-icon button-icon-danger"
+                                                aria-label="Hapus pembeli"
+                                                data-tooltip="Hapus"
+                                                data-delete-modal-open="customer-delete-modal-<?= esc($customer['id']) ?>">
 
-                        </tr>
+                                                <svg
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="1.8"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    aria-hidden="true">
 
-                    <?php endforeach; ?>
+                                                    <path d="M3 6h18"></path>
 
-                </tbody>
+                                                    <path d="M8 6V4h8v2"></path>
 
-            </table>
+                                                    <path d="M19 6l-1 14H6L5 6"></path>
 
-        </div>
+                                                    <path d="M10 11v5"></path>
 
-        <?php foreach ($customers as $customer): ?>
+                                                    <path d="M14 11v5"></path>
 
-            <?= view('admin/customers/edit', [
-                'customer' => $customer,
+                                                </svg>
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        <?php endforeach; ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <?php foreach ($customers as $customer): ?>
+
+                <?= view('admin/customers/edit', [
+                    'customer' => $customer,
+                ]) ?>
+
+                <?= view('admin/customers/delete', [
+                    'customer' => $customer,
+                ]) ?>
+
+            <?php endforeach; ?>
+
+            <?= view('components/pagination', [
+                'pager' => $pager,
+                'total' => $totalCustomers,
+                'perPage' => $perPage,
             ]) ?>
 
-            <?= view('admin/customers/delete', [
-                'customer' => $customer,
-            ]) ?>
+        <?php endif; ?>
 
-        <?php endforeach; ?>
-
-    <?php endif; ?>
+    </div>
 
 </div>
 
