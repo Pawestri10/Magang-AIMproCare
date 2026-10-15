@@ -17,19 +17,51 @@ class ProductController extends BaseController
         $this->activityLogService = new ActivityLogService();
     }
 
+
     public function index()
     {
-        $products = $this->productModel
-            ->orderBy('id', 'DESC')
-            ->paginate(10, 'default');
+        $search = trim((string) $this->request->getGet('search'));
+        $filter = (string) $this->request->getGet('filter');
+
+        $allowedFilters = ['all', 'name', 'brand', 'model'];
+
+        if (! in_array($filter, $allowedFilters, true)) {
+            $filter = 'all';
+        }
+
+        $builder = $this->productModel
+            ->orderBy('id', 'DESC');
+
+        if ($search !== '') {
+            switch ($filter) {
+                case 'name':
+                    $builder->like('name', $search);
+                    break;
+                case 'brand':
+                    $builder->like('brand', $search);
+                    break;
+                case 'model':
+                    $builder->like('model', $search);
+                    break;
+                default:
+                    $builder->groupStart()->like('name', $search)->orLike('brand', $search)->orLike('model', $search)->groupEnd();
+                    break;
+            }
+        }
+
+        $products = $builder->paginate(10, 'default');
 
         $pager = $this->productModel->pager;
+
+        $pager->only(['search', 'filter']);
 
         $data = [
             'products' => $products,
             'pager' => $pager,
             'totalProducts' => $pager->getTotal('default'),
             'perPage' => 10,
+            'search' => $search,
+            'filter' => $filter,
         ];
 
         return view('admin/products/index', $data);

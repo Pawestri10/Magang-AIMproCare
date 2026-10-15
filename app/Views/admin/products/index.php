@@ -34,135 +34,184 @@
     </div>
 <?php endif; ?>
 
-<div class="activity-log-card product-result-card">
-    <div class="table-toolbar">
 
-        <button
-            type="button"
-            class="button button-primary"
-            data-modal-open="product-create-modal">
+<div class="card product-search-panel">
+    <form
+        action="<?= site_url('admin/products') ?>"
+        method="get"
+        class="search-filter-panel">
 
-            + Tambah Produk
+        <div class="search-filter-fields">
 
-        </button>
-    </div>
+            <div class="form-group">
+                <label for="product-search">Cari Produk</label>
 
-    <?php if (empty($products)): ?>
+                <div class="search-input-wrapper">
+                    <svg
+                        class="search-input-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="19"
+                        height="19"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m20 20-4-4" />
+                    </svg>
 
-        <div class="empty-state">
+                    <input
+                        type="search"
+                        id="product-search"
+                        name="search"
+                        value="<?= esc($search ?? '') ?>"
+                        class="form-control search-input"
+                        placeholder="Cari nama produk, brand, atau model">
+                </div>
+            </div>
 
-            <p>
-                Belum ada data produk.
-            </p>
+            <div class="form-group"> <label for="product-filter">Filter Berdasarkan</label> <select id="product-filter" name="filter" class="form-control">
+                    <option value="all" <?= ($filter ?? 'all') === 'all' ? 'selected' : '' ?>> Semua Data </option>
+                    <option value="name" <?= ($filter ?? 'all') === 'name' ? 'selected' : '' ?>> Nama Produk </option>
+                    <option value="brand" <?= ($filter ?? 'all') === 'brand' ? 'selected' : '' ?>> Brand </option>
+                    <option value="model" <?= ($filter ?? 'all') === 'model' ? 'selected' : '' ?>> Model </option>
+                </select>
+            </div>
 
         </div>
 
-    <?php else: ?>
+        <div class="search-filter-actions">
+            <button
+                type="submit"
+                class="button button-primary search-submit-button">
 
-        <div class="table-wrapper">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m20 20-4-4" />
+                </svg>
 
-            <table class="data-table">
+                <span>Cari</span>
+            </button>
 
-                <thead>
+            <a
+                href="<?= site_url('admin/products') ?>"
+                class="btn search-reset-button">
+                Reset
+            </a>
+        </div>
+    </form>
+</div>
 
-                    <tr>
+<div class="table-toolbar">
+    <button
+        type="button"
+        class="button button-primary"
+        data-modal-open="product-create-modal">
+        + Tambah Produk
+    </button>
+</div>
 
-                        <th>
-                            No.
-                        </th>
+<div class="card">
 
-                        <th>
-                            Nama Produk
-                        </th>
+    <div class="activity-log-card product-result-card">
 
-                        <th>
-                            Brand
-                        </th>
+        <?php if (empty($products)): ?>
 
-                        <th>
-                            Model
-                        </th>
+            <div class="empty-state">
+                <p>
+                    <?= ($search ?? '') !== ''
+                        ? 'Produk tidak ditemukan untuk pencarian "' . esc($search) . '".'
+                        : 'Belum ada data produk.' ?>
+                </p>
+            </div>
 
-                        <th>
-                            Dibuat
-                        </th>
+        <?php else: ?>
 
-                        <th>
-                            Aksi
-                        </th>
+            <div class="table-wrapper">
 
-                    </tr>
+                <table class="data-table">
 
-                </thead>
-
-                <tbody>
-
-                    <?php foreach ($products as $index => $product): ?>
+                    <thead>
 
                         <tr>
 
-                            <td>
-                                <?= (($pager->getCurrentPage('default') - 1) * $perPage) + $index + 1 ?>
-                            </td>
+                            <th>
+                                No.
+                            </th>
 
-                            <td>
-                                <?= esc($product['name']) ?>
-                            </td>
+                            <th>
+                                Nama Produk
+                            </th>
 
-                            <td>
-                                <?= esc($product['brand']) ?>
-                            </td>
+                            <th>
+                                Brand
+                            </th>
 
-                            <td>
-                                <?= esc($product['model']) ?>
-                            </td>
+                            <th>
+                                Model
+                            </th>
 
-                            <td>
-                                <?= esc($product['created_at']) ?>
-                            </td>
+                            <th>
+                                Dibuat
+                            </th>
 
-                            <td>
+                            <th>
+                                Aksi
+                            </th>
 
-                                <div class="table-actions">
+                        </tr>
 
-                                    <button
-                                        type="button"
-                                        class="button button-icon button-icon-edit"
-                                        aria-label="Edit produk"
-                                        data-tooltip="Edit"
-                                        data-modal-open="product-edit-modal-<?= esc($product['id']) ?>">
+                    </thead>
 
-                                        <svg
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="1.8"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            aria-hidden="true">
+                    <tbody>
 
-                                            <path d="M12 20h9"></path>
+                        <?php foreach ($products as $index => $product): ?>
 
-                                            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
+                            <tr>
 
-                                        </svg>
+                                <td>
+                                    <?= (($pager->getCurrentPage('default') - 1) * $perPage) + $index + 1 ?>
+                                </td>
 
-                                    </button>
+                                <td>
+                                    <?= esc($product['name']) ?>
+                                </td>
 
-                                    <form
-                                        id="product-delete-form-<?= esc($product['id']) ?>"
-                                        method="post"
-                                        action="<?= site_url('admin/products/' . $product['id'] . '/delete') ?>"
-                                        class="table-action-form">
+                                <td>
+                                    <?= esc($product['brand']) ?>
+                                </td>
 
-                                        <?= csrf_field() ?>
+                                <td>
+                                    <?= esc($product['model']) ?>
+                                </td>
+
+                                <td>
+                                    <?= esc($product['created_at']) ?>
+                                </td>
+
+                                <td>
+
+                                    <div class="table-actions">
 
                                         <button
                                             type="button"
-                                            class="button button-icon button-icon-danger"
-                                            aria-label="Hapus produk"
-                                            data-tooltip="Hapus"
-                                            data-delete-modal-open="product-delete-modal-<?= esc($product['id']) ?>">
+                                            class="button button-icon button-icon-edit"
+                                            aria-label="Edit produk"
+                                            data-tooltip="Edit"
+                                            data-modal-open="product-edit-modal-<?= esc($product['id']) ?>">
 
                                             <svg
                                                 viewBox="0 0 24 24"
@@ -173,55 +222,89 @@
                                                 stroke-linejoin="round"
                                                 aria-hidden="true">
 
-                                                <path d="M3 6h18"></path>
+                                                <path d="M12 20h9"></path>
 
-                                                <path d="M8 6V4h8v2"></path>
-
-                                                <path d="M19 6l-1 14H6L5 6"></path>
-
-                                                <path d="M10 11v5"></path>
-
-                                                <path d="M14 11v5"></path>
+                                                <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"></path>
 
                                             </svg>
 
                                         </button>
 
-                                    </form>
+                                        <form
+                                            id="product-delete-form-<?= esc($product['id']) ?>"
+                                            method="post"
+                                            action="<?= site_url('admin/products/' . $product['id'] . '/delete') ?>"
+                                            class="table-action-form">
 
-                                </div>
+                                            <?= csrf_field() ?>
 
-                            </td>
+                                            <button
+                                                type="button"
+                                                class="button button-icon button-icon-danger"
+                                                aria-label="Hapus produk"
+                                                data-tooltip="Hapus"
+                                                data-delete-modal-open="product-delete-modal-<?= esc($product['id']) ?>">
 
-                        </tr>
+                                                <svg
+                                                    viewBox="0 0 24 24"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    stroke-width="1.8"
+                                                    stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    aria-hidden="true">
 
-                    <?php endforeach; ?>
+                                                    <path d="M3 6h18"></path>
 
-                </tbody>
+                                                    <path d="M8 6V4h8v2"></path>
 
-            </table>
+                                                    <path d="M19 6l-1 14H6L5 6"></path>
 
-        </div>
+                                                    <path d="M10 11v5"></path>
 
-        <?php foreach ($products as $product): ?>
+                                                    <path d="M14 11v5"></path>
 
-            <?= view('admin/products/edit', [
-                'product' => $product,
+                                                </svg>
+
+                                            </button>
+
+                                        </form>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        <?php endforeach; ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <?php foreach ($products as $product): ?>
+
+                <?= view('admin/products/edit', [
+                    'product' => $product,
+                ]) ?>
+
+                <?= view('admin/products/delete', [
+                    'product' => $product,
+                ]) ?>
+
+            <?php endforeach; ?>
+
+            <?= view('components/pagination', [
+                'pager' => $pager,
+                'total' => $totalProducts,
+                'perPage' => $perPage,
             ]) ?>
 
-            <?= view('admin/products/delete', [
-                'product' => $product,
-            ]) ?>
+        <?php endif; ?>
 
-        <?php endforeach; ?>
-
-        <?= view('components/pagination', [
-            'pager' => $pager,
-            'total' => $totalProducts,
-            'perPage' => $perPage,
-        ]) ?>
-
-    <?php endif; ?>
+    </div>
 
 </div>
 

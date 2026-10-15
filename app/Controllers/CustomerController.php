@@ -17,15 +17,73 @@ class CustomerController extends BaseController
         $this->activityLogService = new ActivityLogService();
     }
 
+
     public function index()
     {
-        $customers = $this->customerModel
-            ->orderBy('id', 'DESC')
-            ->findAll();
 
-        return view('admin/customers/index', [
+        $search = trim((string) $this->request->getGet('search'));
+        $filter = (string) $this->request->getGet('filter');
+
+        $allowedFilters = [
+            'all',
+            'name',
+            'whatsapp',
+            'email',
+            'address',
+        ];
+
+        if (!in_array($filter, $allowedFilters, true)) {
+            $filter = 'all';
+        }
+
+        $builder = $this->customerModel
+            ->orderBy('id', 'DESC');
+
+        if ($search !== '') {
+            switch ($filter) {
+                case 'name':
+                    $builder->like('name', $search);
+                    break;
+
+                case 'whatsapp':
+                    $builder->like('whatsapp', $search);
+                    break;
+
+                case 'email':
+                    $builder->like('email', $search);
+                    break;
+
+                case 'address':
+                    $builder->like('address', $search);
+                    break;
+
+                default:
+                    $builder->groupStart()
+                        ->like('name', $search)
+                        ->orLike('whatsapp', $search)
+                        ->orLike('email', $search)
+                        ->orLike('address', $search)
+                        ->groupEnd();
+                    break;
+            }
+        }
+
+        $customers = $builder->paginate(10, 'default');
+
+        $pager = $this->customerModel->pager;
+
+        $pager->only(['search', 'filter']);
+
+        $data = [
             'customers' => $customers,
-        ]);
+            'pager' => $pager,
+            'totalCustomers' => $pager->getTotal('default'),
+            'perPage' => 10,
+            'search' => $search,
+            'filter' => $filter,
+        ];
+
+        return view('admin/customers/index', $data);
     }
 
     public function create()
