@@ -18,7 +18,7 @@
 
 </div>
 
-<div class="card">
+<div class="card sales-unit-card">
 
     <div class="section-header">
 
@@ -36,143 +36,252 @@
 
     </div>
 
+    <form action="<?= site_url('admin/sales') ?>" method="get"
+        class="search-filter-panel report-search-panel activity-log-search-panel">
 
-    <?php if (empty($units)): ?>
+        <div class="search-filter-fields report-filter-grid">
 
-        <div class="empty-state">
+            <div class="form-group">
+                <label for="unit_search">Cari Unit</label>
 
-            <p>
-                Belum ada unit yang siap dijual.
-            </p>
+                <div class="search-input-wrapper">
+                    <svg
+                        class="search-input-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="19"
+                        height="19"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m20 20-4-4" />
+                    </svg>
+
+                    <input
+                        type="search"
+                        id="unit_search"
+                        name="unit_search"
+                        class="form-control search-input"
+                        value="<?= esc($unitSearch ?? '') ?>"
+                        placeholder="Nama produk, brand, model, atau serial">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="unit_brand">Brand</label>
+
+                <select id="unit_brand" name="unit_brand" class="form-control">
+                    <option value="">Semua Brand</option>
+
+                    <?php foreach ($unitBrands as $item): ?>
+                        <option
+                            value="<?= esc($item['brand']) ?>"
+                            <?= ($unitBrand ?? '') === $item['brand'] ? 'selected' : '' ?>>
+                            <?= esc($item['brand']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="unit_model">Model</label>
+
+                <select id="unit_model" name="unit_model" class="form-control">
+                    <option value="">Semua Model</option>
+
+                    <?php foreach ($unitModels as $item): ?>
+                        <option
+                            value="<?= esc($item['model']) ?>"
+                            <?= ($unitModel ?? '') === $item['model'] ? 'selected' : '' ?>>
+                            <?= esc($item['model']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
 
         </div>
 
-    <?php else: ?>
+        <div class="search-filter-actions report-filter-actions">
 
-        <div class="table-wrapper">
+            <button type="submit" class="button button-primary search-submit-button">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m20 20-4-4" />
+                </svg>
+                <span>Cari</span>
+            </button>
 
-            <table class="data-table">
+            <a href="<?= site_url('admin/sales') ?>" class="btn search-reset-button">
+                Reset
+            </a>
 
-                <thead>
+        </div>
 
-                    <tr>
+    </form>
 
-                        <th>
-                            No.
-                        </th>
+    <div class="activity-log-card">
 
-                        <th>
-                            Produk
-                        </th>
+        <?php if (empty($units)): ?>
 
-                        <th>
-                            Brand
-                        </th>
+            <div class="empty-state">
 
-                        <th>
-                            Model
-                        </th>
+                <p>
+                    Belum ada unit yang siap dijual.
+                </p>
 
-                        <th>
-                            Nomor Serial
-                        </th>
+            </div>
 
-                        <th>
-                            Status
-                        </th>
+        <?php else: ?>
 
-                        <th>
-                            Aksi
-                        </th>
+            <div class="activity-log-table-wrapper">
 
-                    </tr>
+                <table class="data-table">
 
-                </thead>
-
-
-                <tbody>
-
-                    <?php foreach ($units as $index => $unit): ?>
+                    <thead>
 
                         <tr>
 
-                            <td>
-                                <?= $index + 1 ?>
-                            </td>
+                            <th>
+                                No.
+                            </th>
 
-                            <td>
-                                <?= esc($unit['product_name']) ?>
-                            </td>
+                            <th>
+                                Produk
+                            </th>
 
-                            <td>
-                                <?= esc($unit['brand']) ?>
-                            </td>
+                            <th>
+                                Brand
+                            </th>
 
-                            <td>
-                                <?= esc($unit['model']) ?>
-                            </td>
+                            <th>
+                                Model
+                            </th>
 
-                            <td>
-                                <?= esc($unit['serial_number']) ?>
-                            </td>
+                            <th>
+                                Nomor Serial
+                            </th>
 
-                            <td>
+                            <th>
+                                Status
+                            </th>
 
-                                <span class="badge badge-success">
-                                    <?= esc($unit['status']) ?>
-                                </span>
-
-                            </td>
-
-                            <td>
-
-                                <div class="table-actions">
-
-                                    <button
-                                        type="button"
-                                        class="button button-icon button-icon-view"
-                                        data-tooltip="Pilih Unit"
-                                        aria-label="Pilih Unit"
-                                        data-modal-open="sales-select-modal-<?= esc($unit['id']) ?>">
-
-                                        <svg
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="1.8"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            aria-hidden="true">
-
-                                            <rect
-                                                x="4"
-                                                y="4"
-                                                width="16"
-                                                height="16"
-                                                rx="3">
-                                            </rect>
-
-                                            <path d="m8 12 2.5 2.5L16 9"></path>
-
-                                        </svg>
-
-                                    </button>
-
-                                </div>
-
-                            </td>
+                            <th>
+                                Aksi
+                            </th>
 
                         </tr>
 
-                    <?php endforeach; ?>
+                    </thead>
 
-                </tbody>
 
-            </table>
+                    <tbody>
 
-        </div>
+                        <?php foreach ($units as $index => $unit): ?>
 
-    <?php endif; ?>
+                            <tr>
+
+                                <td>
+                                    <?= ($unitsPager->getCurrentPage('units') - 1) * 10 + $index + 1 ?>
+                                </td>
+
+                                <td>
+                                    <?= esc($unit['product_name']) ?>
+                                </td>
+
+                                <td>
+                                    <?= esc($unit['brand']) ?>
+                                </td>
+
+                                <td>
+                                    <?= esc($unit['model']) ?>
+                                </td>
+
+                                <td>
+                                    <?= esc($unit['serial_number']) ?>
+                                </td>
+
+                                <td>
+
+                                    <span class="badge badge-success">
+                                        <?= esc($unit['status']) ?>
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    <div class="table-actions">
+
+                                        <button
+                                            type="button"
+                                            class="button button-icon button-icon-view"
+                                            data-tooltip="Pilih Unit"
+                                            aria-label="Pilih Unit"
+                                            data-modal-open="sales-select-modal-<?= esc($unit['id']) ?>">
+
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.8"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                aria-hidden="true">
+
+                                                <rect
+                                                    x="4"
+                                                    y="4"
+                                                    width="16"
+                                                    height="16"
+                                                    rx="3">
+                                                </rect>
+
+                                                <path d="m8 12 2.5 2.5L16 9"></path>
+
+                                            </svg>
+
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        <?php endforeach; ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        <?php endif; ?>
+
+        <?php if (!empty($units)): ?>
+            <?= view('components/pagination', [
+                'pager' => $unitsPager,
+                'total' => $unitsPager->getDetails('units')['total'],
+                'perPage' => 10,
+                'group' => 'units',
+            ]) ?>
+        <?php endif; ?>
+
+    </div>
 
 </div>
 
@@ -194,191 +303,302 @@
 
     </div>
 
+    <form action="<?= site_url('admin/sales') ?>" method="get"
+        class="search-filter-panel report-search-panel activity-log-search-panel">
 
-    <?php if (empty($sales)): ?>
+        <div class="search-filter-fields report-filter-grid">
 
-        <div class="empty-state">
+            <div class="form-group">
+                <label for="sale_search">Cari Penjualan</label>
 
-            <p>
-                Belum ada riwayat penjualan.
-            </p>
+                <div class="search-input-wrapper">
+                    <svg
+                        class="search-input-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="19"
+                        height="19"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        aria-hidden="true">
+                        <circle cx="11" cy="11" r="7" />
+                        <path d="m20 20-4-4" />
+                    </svg>
+
+                    <input
+                        type="search"
+                        id="sale_search"
+                        name="sale_search"
+                        class="form-control search-input"
+                        value="<?= esc($saleSearch ?? '') ?>"
+                        placeholder="Nama produk, serial, pembeli, atau nomor garansi">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="warranty_status">Status Garansi</label>
+
+                <select id="warranty_status" name="warranty_status" class="form-control">
+                    <option value="">Semua Status</option>
+
+                    <?php foreach ($allowedWarrantyStatuses as $item): ?>
+                        <option
+                            value="<?= esc($item['status']) ?>"
+                            <?= ($warrantyStatus ?? '') === $item['status'] ? 'selected' : '' ?>>
+                            <?= esc($item['status']) ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="start_date">Tanggal Pembelian Dari</label>
+
+                <input
+                    type="date"
+                    id="start_date"
+                    name="start_date"
+                    class="form-control"
+                    value="<?= esc($startDate ?? '') ?>">
+            </div>
+
+            <div class="form-group">
+                <label for="end_date">Tanggal Pembelian Sampai</label>
+
+                <input
+                    type="date"
+                    id="end_date"
+                    name="end_date"
+                    class="form-control"
+                    value="<?= esc($endDate ?? '') ?>">
+            </div>
 
         </div>
 
-    <?php else: ?>
+        <div class="search-filter-actions report-filter-actions">
 
-        <div class="table-wrapper">
+            <button type="submit" class="button button-primary search-submit-button">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="17"
+                    height="17"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true">
+                    <circle cx="11" cy="11" r="7" />
+                    <path d="m20 20-4-4" />
+                </svg>
+                <span>Cari</span>
+            </button>
 
-            <table class="data-table">
+            <a href="<?= site_url('admin/sales') ?>" class="btn search-reset-button">
+                Reset
+            </a>
 
-                <thead>
+        </div>
 
-                    <tr>
+    </form>
 
-                        <th>
-                            No.
-                        </th>
+    <div class="activity-log-card">
 
-                        <th>
-                            Produk
-                        </th>
+        <?php if (empty($sales)): ?>
 
-                        <th>
-                            Nomor Serial
-                        </th>
+            <div class="empty-state">
 
-                        <th>
-                            Pembeli
-                        </th>
+                <p>
+                    Belum ada riwayat penjualan.
+                </p>
 
-                        <th>
-                            Tanggal Pembelian
-                        </th>
+            </div>
 
-                        <th>
-                            Nomor Garansi
-                        </th>
+        <?php else: ?>
 
-                        <th>
-                            Status Garansi
-                        </th>
+            <div class="activity-log-table-wrapper">
 
-                        <th>
-                            Aksi
-                        </th>
+                <table class="data-table">
 
-                    </tr>
-
-                </thead>
-
-
-                <tbody>
-
-                    <?php foreach ($sales as $index => $sale): ?>
+                    <thead>
 
                         <tr>
 
-                            <td>
-                                <?= $index + 1 ?>
-                            </td>
+                            <th>
+                                No.
+                            </th>
 
-                            <td>
+                            <th>
+                                Produk
+                            </th>
 
-                                <div>
-                                    <?= esc($sale['product_name']) ?>
-                                </div>
+                            <th>
+                                Nomor Serial
+                            </th>
 
-                                <small>
-                                    <?= esc($sale['brand']) ?>
-                                    —
-                                    <?= esc($sale['model']) ?>
-                                </small>
+                            <th>
+                                Pembeli
+                            </th>
 
-                            </td>
+                            <th>
+                                Tanggal Pembelian
+                            </th>
 
-                            <td>
-                                <?= esc($sale['serial_number']) ?>
-                            </td>
+                            <th>
+                                Nomor Garansi
+                            </th>
 
-                            <td>
-                                <?= esc($sale['customer_name']) ?>
-                            </td>
+                            <th>
+                                Status Garansi
+                            </th>
 
-                            <td>
-                                <?= esc($sale['purchase_date']) ?>
-                            </td>
-
-                            <td>
-                                <?= esc($sale['warranty_number'] ?? '-') ?>
-                            </td>
-
-                            <td>
-
-                                <?php if (($sale['warranty_status'] ?? '') === 'Garansi Aktif'): ?>
-
-                                    <span class="badge badge-success">
-                                        <?= esc($sale['warranty_status']) ?>
-                                    </span>
-
-                                <?php else: ?>
-
-                                    <span class="badge">
-                                        <?= esc($sale['warranty_status'] ?? 'Belum tersedia') ?>
-                                    </span>
-
-                                <?php endif; ?>
-
-                            </td>
-
-                            <td>
-
-                                <div class="table-actions">
-
-                                    <button
-                                        type="button"
-                                        class="button button-icon button-icon-view"
-                                        data-tooltip="Lihat Detail"
-                                        aria-label="Lihat Detail"
-                                        data-modal-open="sales-detail-modal-<?= esc($sale['id']) ?>">
-
-                                        <svg
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="1.8"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            aria-hidden="true">
-
-                                            <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
-
-                                            <circle
-                                                cx="12"
-                                                cy="12"
-                                                r="2.5">
-                                            </circle>
-
-                                        </svg>
-
-                                    </button>
-
-                                    <button
-                                        type="button"
-                                        class="button button-icon button-icon-warranty"
-                                        data-tooltip="Lihat Kartu Garansi"
-                                        aria-label="Lihat Kartu Garansi"
-                                        data-modal-open="warranty-card-modal-<?= esc($sale['id']) ?>">
-                                        <svg
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="1.8"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            aria-hidden="true">
-                                            <path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" />
-                                            <path d="M8 7h8" />
-                                            <path d="M8 11h8" />
-                                            <path d="M8 15h4" />
-                                        </svg>
-                                    </button>
-
-                                </div>
-
-                            </td>
+                            <th>
+                                Aksi
+                            </th>
 
                         </tr>
 
-                    <?php endforeach; ?>
+                    </thead>
 
-                </tbody>
 
-            </table>
+                    <tbody>
 
-        </div>
+                        <?php foreach ($sales as $index => $sale): ?>
 
-    <?php endif; ?>
+                            <tr>
 
+                                <td>
+                                    <?= ($salesPager->getCurrentPage('sales') - 1) * 10 + $index + 1 ?>
+                                </td>
+
+                                <td>
+
+                                    <div>
+                                        <?= esc($sale['product_name']) ?>
+                                    </div>
+
+                                    <small>
+                                        <?= esc($sale['brand']) ?>
+                                        —
+                                        <?= esc($sale['model']) ?>
+                                    </small>
+
+                                </td>
+
+                                <td>
+                                    <?= esc($sale['serial_number']) ?>
+                                </td>
+
+                                <td>
+                                    <?= esc($sale['customer_name']) ?>
+                                </td>
+
+                                <td>
+                                    <?= esc($sale['purchase_date']) ?>
+                                </td>
+
+                                <td>
+                                    <?= esc($sale['warranty_number'] ?? '-') ?>
+                                </td>
+
+                                <td>
+
+                                    <?php if (($sale['warranty_status'] ?? '') === 'Garansi Aktif'): ?>
+
+                                        <span class="badge badge-success">
+                                            <?= esc($sale['warranty_status']) ?>
+                                        </span>
+
+                                    <?php else: ?>
+
+                                        <span class="badge">
+                                            <?= esc($sale['warranty_status'] ?? 'Belum tersedia') ?>
+                                        </span>
+
+                                    <?php endif; ?>
+
+                                </td>
+
+                                <td>
+
+                                    <div class="table-actions">
+
+                                        <button
+                                            type="button"
+                                            class="button button-icon button-icon-view"
+                                            data-tooltip="Lihat Detail"
+                                            aria-label="Lihat Detail"
+                                            data-modal-open="sales-detail-modal-<?= esc($sale['id']) ?>">
+
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.8"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                aria-hidden="true">
+
+                                                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+
+                                                <circle
+                                                    cx="12"
+                                                    cy="12"
+                                                    r="2.5">
+                                                </circle>
+
+                                            </svg>
+
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            class="button button-icon button-icon-warranty"
+                                            data-tooltip="Lihat Kartu Garansi"
+                                            aria-label="Lihat Kartu Garansi"
+                                            data-modal-open="warranty-card-modal-<?= esc($sale['id']) ?>">
+                                            <svg
+                                                viewBox="0 0 24 24"
+                                                fill="none"
+                                                stroke="currentColor"
+                                                stroke-width="1.8"
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                aria-hidden="true">
+                                                <path d="M6 3h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" />
+                                                <path d="M8 7h8" />
+                                                <path d="M8 11h8" />
+                                                <path d="M8 15h4" />
+                                            </svg>
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        <?php endforeach; ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <?= view('components/pagination', [
+                'pager' => $salesPager,
+                'total' => $salesPager->getDetails('sales')['total'],
+                'perPage' => 10,
+                'group' => 'sales',
+            ]) ?>
+
+        <?php endif; ?>
+    </div>
 </div>
 
 

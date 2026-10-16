@@ -212,74 +212,77 @@
     </form>
 </div>
 
-<div class="activity-log-card report-result-card">
+<div class="card">
+
     <div class="section-header report-result-header">
         <div>
             <h2><?= esc($reportTitle) ?></h2>
         </div>
+    </div>
 
-        <div class="report-actions">
-            <div class="report-action-card">
-                <a
-                    href="<?= site_url('admin/reports/export/excel?' . http_build_query($filters)) ?>"
-                    class="btn">
-                    Export Excel
-                </a>
-            </div>
-
-            <div class="report-action-card">
-                <a
-                    href="<?= site_url('admin/reports/export/pdf?' . http_build_query($filters)) ?>"
-                    class="btn"
-                    target="_blank"
-                    rel="noopener">
-                    Cetak PDF
-                </a>
-            </div>
+    <div class="report-actions">
+        <div class="report-action-card">
+            <a
+                href="<?= site_url('admin/reports/export/excel?' . http_build_query($filters)) ?>"
+                class="btn">
+                Export Excel
+            </a>
         </div>
 
+        <div class="report-action-card">
+            <a
+                href="<?= site_url('admin/reports/export/pdf?' . http_build_query($filters)) ?>"
+                class="btn"
+                target="_blank"
+                rel="noopener">
+                Cetak PDF
+            </a>
+        </div>
     </div>
 
-    <div class="activity-log-table-wrapper">
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <?php foreach ($columns as $column): ?>
-                        <th><?= esc($column['label']) ?></th>
-                    <?php endforeach; ?>
-                </tr>
-            </thead>
+    <div class="activity-log-card report-result-card">
 
-            <tbody>
-                <?php if (empty($rows)): ?>
+        <div class="activity-log-table-wrapper">
+            <table class="data-table">
+                <thead>
                     <tr>
-                        <td
-                            colspan="<?= count($columns) ?>"
-                            class="empty-state">
-                            Tidak ada data untuk filter yang dipilih.
-                        </td>
+                        <?php foreach ($columns as $column): ?>
+                            <th><?= esc($column['label']) ?></th>
+                        <?php endforeach; ?>
                     </tr>
-                <?php else: ?>
-                    <?php foreach ($rows as $index => $row): ?>
+                </thead>
+
+                <tbody>
+                    <?php if (empty($rows)): ?>
                         <tr>
-                            <?php foreach ($columns as $column): ?>
-                                <td>
-                                    <?= esc($row[$column['key']] ?? '-') ?>
-                                </td>
-                            <?php endforeach; ?>
+                            <td
+                                colspan="<?= count($columns) ?>"
+                                class="empty-state">
+                                Tidak ada data untuk filter yang dipilih.
+                            </td>
                         </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </tbody>
-        </table>
+                    <?php else: ?>
+                        <?php foreach ($rows as $index => $row): ?>
+                            <tr>
+                                <?php foreach ($columns as $column): ?>
+                                    <td>
+                                        <?= esc($row[$column['key']] ?? '-') ?>
+                                    </td>
+                                <?php endforeach; ?>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+
+        <?= view('components/pagination', [
+            'pager' => $pager,
+            'total' => $totalRows,
+            'perPage' => $perPage,
+        ]) ?>
+
     </div>
-
-    <?= view('components/pagination', [
-        'pager' => $pager,
-        'total' => $totalRows,
-        'perPage' => $perPage,
-    ]) ?>
-
 </div>
 
 <script>

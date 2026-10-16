@@ -37,7 +37,15 @@ class SalesController extends BaseController
 
     public function index()
     {
-        $units = $this->productUnitModel
+        $unitSearch = trim((string) $this->request->getGet('unit_search'));
+        $unitBrand = trim((string) $this->request->getGet('unit_brand'));
+        $unitModel = trim((string) $this->request->getGet('unit_model'));
+        $saleSearch = trim((string) $this->request->getGet('sale_search'));
+        $warrantyStatus = trim((string) $this->request->getGet('warranty_status'));
+        $startDate = trim((string) $this->request->getGet('start_date'));
+        $endDate = trim((string) $this->request->getGet('end_date'));
+
+        $unitsBuilder = $this->productUnitModel
             ->select('
                 product_units.*,
                 products.name AS product_name,
@@ -54,15 +62,41 @@ class SalesController extends BaseController
                 'left'
             )
             ->where('product_units.status', 'Siap Dijual')
-            ->where('sales.id', null)
+            ->where('sales.id', null);
+
+        if ($unitSearch !== '') {
+            $unitsBuilder
+                ->groupStart()
+                ->like('products.name', $unitSearch)
+                ->orLike('products.brand', $unitSearch)
+                ->orLike('products.model', $unitSearch)
+                ->orLike('product_units.serial_number', $unitSearch)
+                ->groupEnd();
+        }
+
+        if ($unitBrand !== '') {
+            $unitsBuilder->where('products.brand', $unitBrand);
+        }
+
+        if ($unitModel !== '') {
+            $unitsBuilder->where('products.model', $unitModel);
+        }
+
+        $units = $unitsBuilder
             ->orderBy('product_units.id', 'DESC')
-            ->findAll();
+            ->paginate(10, 'units');
 
         $customers = $this->customerModel
             ->orderBy('name', 'ASC')
             ->findAll();
 
-        $sales = $this->salesModel
+        $allowedWarrantyStatuses = $this->warrantyModel
+            ->select('status')
+            ->distinct()
+            ->orderBy('status', 'ASC')
+            ->findAll();
+
+        $salesBuilder = $this->salesModel
             ->select('
                 sales.id,
                 sales.product_unit_id,
@@ -78,19 +112,15 @@ class SalesController extends BaseController
                 sales.notes,
                 sales.created_at,
                 sales.updated_at,
-
                 product_units.serial_number,
                 product_units.status AS unit_status,
-
                 products.name AS product_name,
                 products.brand,
                 products.model,
-
                 customers.name AS customer_name,
                 customers.whatsapp AS customer_whatsapp,
                 customers.email AS customer_email,
                 customers.address AS customer_address,
-
                 warranties.warranty_number,
                 warranties.start_date AS warranty_start_date,
                 warranties.end_date AS warranty_end_date,
@@ -113,9 +143,33 @@ class SalesController extends BaseController
                 'warranties',
                 'warranties.sale_id = sales.id',
                 'left'
-            )
+            );
+
+        if ($saleSearch !== '') {
+            $salesBuilder
+                ->groupStart()
+                ->like('products.name', $saleSearch)
+                ->orLike('product_units.serial_number', $saleSearch)
+                ->orLike('customers.name', $saleSearch)
+                ->orLike('warranties.warranty_number', $saleSearch)
+                ->groupEnd();
+        }
+
+        if ($warrantyStatus !== '') {
+            $salesBuilder->where('warranties.status', $warrantyStatus);
+        }
+
+        if ($startDate !== '') {
+            $salesBuilder->where('sales.purchase_date >=', $startDate);
+        }
+
+        if ($endDate !== '') {
+            $salesBuilder->where('sales.purchase_date <=', $endDate);
+        }
+
+        $sales = $salesBuilder
             ->orderBy('sales.id', 'DESC')
-            ->findAll();
+            ->paginate(10, 'sales');
 
         $qrCodeService = new QrCodeService();
 
@@ -136,10 +190,43 @@ class SalesController extends BaseController
 
         unset($sale);
 
+        $db = \Config\Database::connect();
+
+        $unitBrands = $db->table('products')
+            ->select('brand')
+            ->distinct()
+            ->where('brand IS NOT NULL', null, false)
+            ->where('brand !=', '')
+            ->orderBy('brand', 'ASC')
+            ->get()
+            ->getResultArray();
+
+        $unitModels = $db->table('products')
+            ->select('model')
+            ->distinct()
+            ->where('model IS NOT NULL', null, false)
+            ->where('model !=', '')
+            ->orderBy('model', 'ASC')
+            ->get()
+            ->getResultArray();
+
         return view('admin/sales/index', [
             'units' => $units,
+            'unitsPager' => $this->productUnitModel->pager,
             'customers' => $customers,
             'sales' => $sales,
+            'salesPager' => $this->salesModel->pager,
+            'unitSearch' => $unitSearch,
+            'saleSearch' => $saleSearch,
+            'warrantyStatus' => $warrantyStatus,
+            'startDate' => $startDate,
+            'endDate' => $endDate,
+            'allowedWarrantyStatuses' => $allowedWarrantyStatuses,
+            'unitBrand' => $unitBrand,
+            'unitModel' => $unitModel,
+            'unitBrands' => $unitBrands,
+            'unitModels' => $unitModels,
+
         ]);
     }
 
