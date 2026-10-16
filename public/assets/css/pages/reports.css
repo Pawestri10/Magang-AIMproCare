@@ -14,9 +14,13 @@
 
 .report-actions {
     display: flex;
+    justify-content: flex-end;
     flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
+    gap: 5px;
+    width: 100%;
+    margin-top: 12px;
+    margin-bottom: 12px;
 }
 
 .report-result-header {
@@ -25,6 +29,14 @@
     align-items: center;
     gap: 16px;
     flex-wrap: wrap;
+    padding-top: 12px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.report-result-header h2 {
+    margin-top: 8px;
+    margin-bottom: 0;
 }
 
 @media (max-width: 900px) {
