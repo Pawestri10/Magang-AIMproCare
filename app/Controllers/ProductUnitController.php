@@ -28,17 +28,73 @@ class ProductUnitController extends BaseController
 
     public function index()
     {
-        $units = $this->productUnitModel
-            ->select('product_units.*, products.name AS product_name, products.brand, products.model,
-            EXISTS (
-                SELECT 1
-                FROM qc_inspections
-                WHERE qc_inspections.product_unit_id = product_units.id
-            ) AS has_inspection')
 
-            ->join('products', 'products.id = product_units.product_id')
+        $perPage = 10;
+        $page = max(1, (int) $this->request->getGet('page'));
+        $offset = ($page - 1) * $perPage;
+
+        $search = trim((string) $this->request->getGet('search'));
+        $status = trim((string) $this->request->getGet('status'));
+
+        $allowedStatuses = [
+            'Draft',
+            'Menunggu QC',
+            'Perlu Pemeriksaan Ulang',
+            'Tidak Lolos QC',
+            'Siap Dijual',
+            'Terjual',
+            'Dikembalikan',
+        ];
+
+        if (! in_array($status, $allowedStatuses, true)) {
+            $status = '';
+        }
+
+        $unitQuery = $this->productUnitModel
+            ->select('
+                product_units.*,
+                products.name AS product_name,
+                products.brand,
+                products.model,
+                EXISTS (
+                    SELECT 1
+                    FROM qc_inspections
+                    WHERE qc_inspections.product_unit_id = product_units.id
+                ) AS has_inspection
+            ')
+            ->join('products', 'products.id = product_units.product_id');
+
+        if ($search !== '') {
+            $unitQuery
+                ->groupStart()
+                ->like('products.name', $search)
+                ->orLike('products.brand', $search)
+                ->orLike('products.model', $search)
+                ->orLike('product_units.serial_number', $search)
+                ->groupEnd();
+        }
+
+        if ($status !== '') {
+            $unitQuery->where('product_units.status', $status);
+        }
+
+        $totalUnits = $unitQuery->countAllResults(false);
+
+        $units = $unitQuery
             ->orderBy('product_units.id', 'DESC')
-            ->findAll();
+            ->limit($perPage, $offset)
+            ->find();
+
+        $pager = service('pager');
+
+        $pager->store(
+            'default',
+            $page,
+            $perPage,
+            $totalUnits
+        );
+
+        $pager->only(['search', 'status']);
 
         $inspections = $this->qcInspectionModel
             ->select('
@@ -93,6 +149,12 @@ class ProductUnitController extends BaseController
                 ->orderBy('name', 'ASC')
                 ->findAll(),
             'inspectionHistory' => $inspectionHistory,
+            'pager'              => $pager,
+            'perPage'            => $perPage,
+            'totalUnits'         => $totalUnits,
+            'search'   => $search,
+            'status'   => $status,
+            'statuses' => $allowedStatuses,
         ]);
     }
 

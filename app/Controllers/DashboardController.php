@@ -98,6 +98,24 @@ class DashboardController extends BaseController
             $chartValues[] = $count;
         }
 
+        $perPage = 10;
+        $page = max(1, (int) $this->request->getGet('page'));
+        $offset = ($page - 1) * $perPage;
+
+
+        $totalBestSellingProducts = $db->table('sales')
+            ->join(
+                'product_units',
+                'product_units.id = sales.product_unit_id'
+            )
+            ->join(
+                'products',
+                'products.id = product_units.product_id'
+            )
+            ->select('products.id')
+            ->groupBy('products.id')
+            ->countAllResults();
+
         $bestSellingProducts = $db->table('sales')
             ->select("
                 products.id,
@@ -119,12 +137,20 @@ class DashboardController extends BaseController
                 'products.name',
                 'products.brand',
                 'products.model',
-
             ])
             ->orderBy('total_sold', 'DESC')
-            ->limit(5)
+            ->limit($perPage, $offset)
             ->get()
             ->getResultArray();
+
+        $pager = service('pager');
+        $pager->store(
+            'default',
+            $page,
+            $perPage,
+            $totalBestSellingProducts
+        );
+
 
         return view('admin/dashboard', [
             'unitStats' => $unitStats,
@@ -133,6 +159,9 @@ class DashboardController extends BaseController
             'chartLabels' => $chartLabels,
             'chartValues' => $chartValues,
             'bestSellingProducts' => $bestSellingProducts,
+            'pager' => $pager,
+            'perPage' => $perPage,
+            'totalBestSellingProducts' => $totalBestSellingProducts,
         ]);
     }
 
@@ -187,6 +216,25 @@ class DashboardController extends BaseController
             ->get()
             ->getRowArray();
 
+        $perPage = 10;
+        $page = max(1, (int) $this->request->getGet('page'));
+        $offset = ($page - 1) * $perPage;
+
+        $totalRecentInspections = $db->table('qc_inspections')
+            ->join(
+                'users',
+                'users.id = qc_inspections.user_id'
+            )
+            ->join(
+                'product_units',
+                'product_units.id = qc_inspections.product_unit_id'
+            )
+            ->join(
+                'products',
+                'products.id = product_units.product_id'
+            )
+            ->countAllResults();
+
         $recentInspections = $db->table('qc_inspections')
             ->select("
                 qc_inspections.id,
@@ -214,14 +262,25 @@ class DashboardController extends BaseController
             )
             ->orderBy('qc_inspections.inspection_date', 'DESC')
             ->orderBy('qc_inspections.id', 'DESC')
-            ->limit(5)
+            ->limit($perPage, $offset)
             ->get()
             ->getResultArray();
+
+        $pager = service('pager');
+        $pager->store(
+            'default',
+            $page,
+            $perPage,
+            $totalRecentInspections
+        );
 
         return view('qc/dashboard', [
             'unitStats' => $unitStats,
             'inspectionStats' => $inspectionStats,
             'recentInspections' => $recentInspections,
+            'pager' => $pager,
+            'perPage' => $perPage,
+            'totalRecentInspections' => $totalRecentInspections,
         ]);
     }
 }
