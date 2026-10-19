@@ -128,10 +128,10 @@ $failedInspections = (int) ($inspectionStats['failed_inspections'] ?? 0);
 
 <div class="section-header dashboard-section-header">
     <h2>Riwayat Pemeriksaan Terbaru</h2>
-    <p>Lima pemeriksaan QC terakhir yang tercatat di sistem.</p>
+    <p>Riwayat pemeriksaan QC yang tercatat di sistem.</p>
 </div>
 
-<div class="card">
+<div class="activity-log-card product-result-card">
     <?php if (!empty($recentInspections)): ?>
         <div class="table-wrapper">
             <table class="data-table">
@@ -162,7 +162,12 @@ $failedInspections = (int) ($inspectionStats['failed_inspections'] ?? 0);
                         ?>
 
                         <tr>
-                            <td><?= $index + 1 ?></td>
+                            <td>
+                                <?= esc(
+                                    (($pager->getCurrentPage('default') - 1) * $perPage)
+                                        + $index + 1
+                                ) ?>
+                            </td>
 
                             <td>
                                 <?= !empty($inspection['inspection_date'])
@@ -212,6 +217,13 @@ $failedInspections = (int) ($inspectionStats['failed_inspections'] ?? 0);
                 </tbody>
             </table>
         </div>
+
+        <?= view('components/pagination', [
+            'pager' => $pager,
+            'total' => $totalRecentInspections,
+            'perPage' => $perPage,
+        ]) ?>
+
     <?php else: ?>
         <div class="empty-state">
             Belum ada riwayat pemeriksaan QC.

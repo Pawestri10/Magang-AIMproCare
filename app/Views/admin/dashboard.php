@@ -309,10 +309,10 @@ $maxChartValue = max(1, ...array_map(
 
 <div class="section-header dashboard-section-header">
     <h2>Produk Paling Banyak Terjual</h2>
-    <p>Lima produk dengan jumlah penjualan tertinggi.</p>
+    <p>Daftar produk berdasarkan jumlah penjualan tertinggi.</p>
 </div>
 
-<div class="card">
+<div class="activity-log-card product-result-card">
     <?php if (!empty($bestSellingProducts)): ?>
         <div class="table-wrapper">
             <table class="data-table">
@@ -329,7 +329,12 @@ $maxChartValue = max(1, ...array_map(
                 <tbody>
                     <?php foreach ($bestSellingProducts as $index => $product): ?>
                         <tr>
-                            <td><?= $index + 1 ?></td>
+                            <td>
+                                <?= esc(
+                                    (($pager->getCurrentPage('default') - 1) * $perPage)
+                                        + $index + 1
+                                ) ?>
+                            </td>
 
                             <td>
                                 <?= esc($product['name'] ?? '-') ?>
@@ -354,6 +359,13 @@ $maxChartValue = max(1, ...array_map(
                 </tbody>
             </table>
         </div>
+
+        <?= view('components/pagination', [
+            'pager' => $pager,
+            'total' => $totalBestSellingProducts,
+            'perPage' => $perPage,
+        ]) ?>
+
     <?php else: ?>
         <div class="empty-state">
             Belum ada data penjualan produk.
