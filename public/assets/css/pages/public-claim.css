@@ -147,7 +147,6 @@
     color: rgba(255, 255, 255, 0.34);
 }
 
-/* Select option fallback for dark UI */
 .public-form-group select option {
     background: #17191d;
     color: #ffffff;
@@ -516,9 +515,6 @@
     opacity: 0.58;
 }
 
-
-/* Actions */
-
 .public-claim-actions {
     display: flex;
     justify-content: center;
@@ -564,9 +560,6 @@
     line-height: 1.6;
     word-break: break-word;
 }
-
-
-/* Responsive */
 
 @media (max-width: 640px) {
 

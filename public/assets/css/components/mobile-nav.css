@@ -1,7 +1,3 @@
-/* MOBILE NAVIGATION */
-
-/* Navigation Container */
-
 .mobile-nav {
     position: fixed;
 
@@ -49,9 +45,6 @@
     z-index: 200;
 }
 
-
-/* Navigation Item */
-
 .mobile-nav-item {
     min-width: var(--touch-target-min);
     min-height: var(--touch-target-min);
@@ -93,18 +86,12 @@
     border-color: var(--glass-border);
 }
 
-
-/* Navigation Label */
-
 .mobile-nav-label {
     font-size: var(--font-size-xs);
     font-weight: var(--font-weight-medium);
 
     text-align: center;
 }
-
-
-/* Desktop */
 
 @media (min-width: 1025px) {
 
@@ -113,9 +100,6 @@
     }
 
 }
-
-
-/* Mobile */
 
 @media (max-width: 768px) {
 
@@ -128,9 +112,6 @@
     }
 
 }
-
-
-/* Small Mobile */
 
 @media (max-width: 480px) {
 
