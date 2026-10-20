@@ -1,7 +1,3 @@
-/* PRODUCT UNITS */
-
-/* Inspection Multi-Step */
-
 document.addEventListener('DOMContentLoaded', () => {
 
     const inspectionModals = document.querySelectorAll('.inspection-modal');

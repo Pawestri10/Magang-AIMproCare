@@ -11,6 +11,10 @@
 
     <title><?= esc($title ?? 'AIMpro Care') ?></title>
 
+    <link rel="manifest" href="<?= base_url('manifest.json') ?>">
+    <meta name="theme-color" content="#08090B">
+    <meta name="application-name" content="AIMpro Technology">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
 
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -81,6 +85,20 @@
     </script>
 
     <script src="<?= base_url('assets/js/pages/product-units.js') ?>"></script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register(
+                    '<?= base_url('sw.js') ?>'
+                ).catch((error) => {
+                    console.error('Pendaftaran Service Worker gagal:', error);
+                });
+            });
+        }
+    </script>
+
+    <script src="<?= base_url('assets/js/pwa.js') ?>"></script>
 
     <?= $this->renderSection('scripts') ?>
 

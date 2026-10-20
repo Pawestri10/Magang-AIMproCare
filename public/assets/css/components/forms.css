@@ -1,7 +1,3 @@
-/* FORMS */
-
-/* Form Group */
-
 .form-group {
     display: flex;
 
@@ -10,9 +6,6 @@
     gap: var(--space-2);
 }
 
-
-/* Form Row */
-
 .form-row {
     display: grid;
 
@@ -20,9 +13,6 @@
 
     gap: var(--space-4);
 }
-
-
-/* Form Label */
 
 .form-label {
     display: inline-flex;
@@ -40,17 +30,11 @@
     line-height: 1.4;
 }
 
-
-/* Required Indicator */
-
 .form-required {
     color: var(--color-danger);
 
     font-weight: var(--font-weight-semibold);
 }
-
-
-/* Form Input */
 
 .form-input {
     width: 100%;
@@ -105,9 +89,6 @@
         0 0 0 3px rgba(229, 231, 235, 0.08);
 }
 
-
-/* Form Helper */
-
 .form-helper {
     color: var(--text-muted);
 
@@ -116,9 +97,6 @@
     line-height: 1.5;
 }
 
-
-/* Form Section */
-
 .form-section {
     display: flex;
 
@@ -126,9 +104,6 @@
 
     gap: var(--space-6);
 }
-
-
-/* Form Section Heading */
 
 .form-section-heading {
     display: flex;
@@ -162,9 +137,6 @@
     line-height: 1.5;
 }
 
-
-/* Form Fields */
-
 .form-fields {
     display: flex;
 
@@ -173,17 +145,11 @@
     gap: var(--space-5);
 }
 
-
-/* Modal Form */
-
 .product-form {
     display: flex;
 
     flex-direction: column;
 }
-
-
-/* Responsive */
 
 @media (max-width: 640px) {
 

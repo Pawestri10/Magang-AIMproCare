@@ -1,7 +1,3 @@
-/* MODALS */
-
-/* Modal Controller */
-
 document.addEventListener('DOMContentLoaded', () => {
 
     const modalOpenButtons = document.querySelectorAll('[data-modal-open]');

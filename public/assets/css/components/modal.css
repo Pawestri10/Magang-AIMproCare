@@ -1,7 +1,3 @@
-/* MODALS */
-
-/* Modal Container */
-
 .modal {
     position: fixed;
     inset: 0;
@@ -16,9 +12,6 @@
     z-index: 1000;
 }
 
-
-/* Modal Backdrop */
-
 .modal-backdrop {
     position: absolute;
     inset: 0;
@@ -28,9 +21,6 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
 }
-
-
-/* Modal Dialog */
 
 .modal-dialog {
     position: relative;
@@ -63,9 +53,6 @@
     isolation: isolate;
 }
 
-
-/* Modal Header */
-
 .modal-header {
     display: flex;
 
@@ -94,9 +81,6 @@
 
     font-size: var(--font-size-sm);
 }
-
-
-/* Modal Close */
 
 .modal-close {
     width: var(--touch-target-min);
@@ -143,9 +127,6 @@
     transform: translateY(-1px);
 }
 
-
-/* Modal Body */
-
 .modal-body {
     display: flex;
 
@@ -155,9 +136,6 @@
 
     padding: var(--space-6);
 }
-
-
-/* Modal Footer */
 
 .modal-footer {
     display: flex;
@@ -172,15 +150,9 @@
     border-top: 1px solid var(--glass-border-subtle);
 }
 
-
-/* Modal Open State */
-
 .modal.is-open {
     display: flex;
 }
-
-
-/* Modal Scrollbar */
 
 .modal-dialog::-webkit-scrollbar {
     width: 6px;
@@ -197,9 +169,6 @@
 
     border-radius: var(--radius-pill);
 }
-
-
-/* Responsive */
 
 @media (max-width: 768px) {
 
@@ -227,19 +196,13 @@
 
 }
 
-/* Modal Body State */
-
 body.modal-open {
     overflow: hidden;
 }
 
-/* Small Modal */
-
 .modal-dialog-small {
     max-width: 420px;
 }
-
-/* Delete Confirmation */
 
 .delete-confirmation {
     display: flex;
@@ -286,16 +249,12 @@ body.modal-open {
     flex-shrink: 0;
 }
 
-/* Modal Footer Actions */
-
 .modal-footer-actions {
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: var(--space-3);
 }
-
-/* Small Modal Spacing */
 
 .modal-dialog-small .modal-header {
     padding: var(--space-5) var(--space-6);

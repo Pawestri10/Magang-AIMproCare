@@ -1,7 +1,3 @@
-/* LOGIN PAGE */
-
-/* Login Container */
-
 .login-page {
     position: relative;
 
@@ -40,9 +36,6 @@
             var(--color-obsidian) 100%
         );
 }
-
-
-/* Ambient Light */
 
 .login-page::before {
     content: "";
@@ -91,9 +84,6 @@
     pointer-events: none;
 }
 
-
-/* Login Wrapper */
-
 .login-wrapper {
     position: relative;
 
@@ -102,9 +92,6 @@
 
     z-index: 1;
 }
-
-
-/* Brand */
 
 .login-brand {
     margin-bottom: var(--space-6);
@@ -138,9 +125,6 @@
     line-height: 1.5;
 }
 
-
-/* Login Card */
-
 .login-card {
     position: relative;
 
@@ -168,8 +152,6 @@
 
     isolation: isolate;
 }
-
-/* Glass Edge */
 
 .login-card::before {
     content: "";
@@ -209,9 +191,6 @@
     z-index: -1;
 }
 
-
-/* Glass Glow */
-
 .login-card::after {
     content: "";
 
@@ -242,8 +221,6 @@
     z-index: -2;
 }
 
-/* Login Heading */
-
 .login-heading {
     margin-bottom: var(--space-6);
 }
@@ -267,9 +244,6 @@
     font-size: var(--font-size-sm);
 }
 
-
-/* Role Badge */
-
 .login-role {
     display: inline-flex;
     align-items: center;
@@ -291,18 +265,12 @@
     font-weight: var(--font-weight-medium);
 }
 
-
-/* Form */
-
 .login-form {
     display: flex;
     flex-direction: column;
 
     gap: var(--space-5);
 }
-
-
-/* Form Group */
 
 .login-form-group {
     display: flex;
@@ -311,18 +279,12 @@
     gap: var(--space-2);
 }
 
-
-/* Form Label */
-
 .login-form-label {
     color: var(--text-secondary);
 
     font-size: var(--font-size-sm);
     font-weight: var(--font-weight-medium);
 }
-
-
-/* Form Input */
 
 .login-form-input {
     width: 100%;
@@ -368,9 +330,6 @@
         0 0 0 3px rgba(229, 231, 235, 0.08);
 }
 
-
-/* Error Alert */
-
 .login-alert {
     margin-bottom: var(--space-5);
 
@@ -386,9 +345,6 @@
 
     font-size: var(--font-size-sm);
 }
-
-
-/* Submit Button */
 
 .login-submit {
     width: 100%;
@@ -449,9 +405,6 @@
         0 5px 16px rgba(0, 0, 0, 0.20);
 }
 
-
-/* Responsive */
-
 @media (max-width: 768px) {
 
     .login-page {
@@ -469,9 +422,6 @@
     }
 
 }
-
-
-/* Small Mobile */
 
 @media (max-width: 480px) {
 
