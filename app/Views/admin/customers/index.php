@@ -336,18 +336,6 @@
 
             </div>
 
-            <?php foreach ($customers as $customer): ?>
-
-                <?= view('admin/customers/edit', [
-                    'customer' => $customer,
-                ]) ?>
-
-                <?= view('admin/customers/delete', [
-                    'customer' => $customer,
-                ]) ?>
-
-            <?php endforeach; ?>
-
             <?= view('components/pagination', [
                 'pager' => $pager,
                 'total' => $totalCustomers,
@@ -359,6 +347,18 @@
     </div>
 
 </div>
+
+<?php foreach ($customers as $customer): ?>
+
+    <?= view('admin/customers/edit', [
+        'customer' => $customer,
+    ]) ?>
+
+    <?= view('admin/customers/delete', [
+        'customer' => $customer,
+    ]) ?>
+
+<?php endforeach; ?>
 
 <?= $this->include('admin/customers/create') ?>
 

@@ -316,23 +316,6 @@
                 </table>
             </div>
 
-            <?php foreach ($claims as $claim): ?>
-
-                <?php if (isset($claimDetails[$claim['id']])): ?>
-
-                    <?= view('admin/claims/detail', [
-                        'claim' => $claimDetails[$claim['id']],
-                        'claimHistories' => $claimHistories[$claim['id']] ?? [],
-                    ]) ?>
-
-                <?php endif; ?>
-
-                <?= view('admin/claims/edit', [
-                    'claim' => $claim,
-                ]) ?>
-
-            <?php endforeach; ?>
-
             <?= view('components/pagination', [
                 'pager' => $pager,
                 'total' => $totalClaims,
@@ -344,5 +327,22 @@
     </div>
 
 </div>
+
+<?php foreach ($claims as $claim): ?>
+
+    <?php if (isset($claimDetails[$claim['id']])): ?>
+
+        <?= view('admin/claims/detail', [
+            'claim' => $claimDetails[$claim['id']],
+            'claimHistories' => $claimHistories[$claim['id']] ?? [],
+        ]) ?>
+
+    <?php endif; ?>
+
+    <?= view('admin/claims/edit', [
+        'claim' => $claim,
+    ]) ?>
+
+<?php endforeach; ?>
 
 <?= $this->endSection() ?>
