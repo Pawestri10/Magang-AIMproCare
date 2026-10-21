@@ -284,18 +284,6 @@
 
             </div>
 
-            <?php foreach ($products as $product): ?>
-
-                <?= view('admin/products/edit', [
-                    'product' => $product,
-                ]) ?>
-
-                <?= view('admin/products/delete', [
-                    'product' => $product,
-                ]) ?>
-
-            <?php endforeach; ?>
-
             <?= view('components/pagination', [
                 'pager' => $pager,
                 'total' => $totalProducts,
@@ -307,6 +295,18 @@
     </div>
 
 </div>
+
+<?php foreach ($products as $product): ?>
+
+    <?= view('admin/products/edit', [
+        'product' => $product,
+    ]) ?>
+
+    <?= view('admin/products/delete', [
+        'product' => $product,
+    ]) ?>
+
+<?php endforeach; ?>
 
 <?= $this->include('admin/products/create') ?>
 
